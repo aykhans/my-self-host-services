@@ -6,7 +6,7 @@
 {$GITEA_DOMAIN} {
     tls /etc/ssl/custom/{$GITEA_CRT} /etc/ssl/custom/{$GITEA_KEY}
 
-   	request_body {
+    request_body {
         max_size 512MB
     }
 
@@ -22,7 +22,7 @@
 {$SLASH_DOMAIN} {
     tls /etc/ssl/custom/{$SLASH_CRT} /etc/ssl/custom/{$SLASH_KEY}
 
-   	request_body {
+    request_body {
         max_size 10MB
     }
 
@@ -38,7 +38,7 @@
 {$MEMOS_DOMAIN} {
     tls /etc/ssl/custom/{$MEMOS_CRT} /etc/ssl/custom/{$MEMOS_KEY}
 
-   	request_body {
+    request_body {
         max_size 128MB
     }
 
@@ -54,7 +54,7 @@
 {$WG_EASY_DOMAIN} {
     tls /etc/ssl/custom/{$WG_EASY_CRT} /etc/ssl/custom/{$WG_EASY_KEY}
 
-   	request_body {
+    request_body {
         max_size 10MB
     }
 
@@ -70,7 +70,7 @@
 {$VAULTWARDEN_DOMAIN} {
     tls /etc/ssl/custom/{$VAULTWARDEN_CRT} /etc/ssl/custom/{$VAULTWARDEN_KEY}
 
-   	request_body {
+    request_body {
         max_size 128MB
     }
 
@@ -84,7 +84,7 @@
 
 ############## sftpgo ##############
 {$SFTPGO_DOMAIN} {
-   	request_body {
+    request_body {
         max_size 5120MB
     }
 
@@ -100,7 +100,7 @@
 {$SEARXNG_DOMAIN} {
     tls /etc/ssl/custom/{$SEARXNG_CRT} /etc/ssl/custom/{$SEARXNG_KEY}
 
-   	request_body {
+    request_body {
         max_size 128MB
     }
 
