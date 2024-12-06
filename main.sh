@@ -44,6 +44,8 @@ generate_env_files() {
 }
 
 start_services() {
+    docker network create caddy 2>/dev/null
+
     echo "Starting gitea..."
     docker compose -f ./gitea/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -52,7 +54,7 @@ start_services() {
         print_error "failed to start Gitea!"
         exit 1
     fi
-    
+
     echo "Starting memos..."
     docker compose -f ./memos/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -61,7 +63,7 @@ start_services() {
         print_error "failed to start Memos!"
         exit 1
     fi
-    
+
     echo "Starting searxng..."
     docker compose -f ./searxng/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -70,7 +72,7 @@ start_services() {
         print_error "failed to start Searxng!"
         exit 1
     fi
-    
+
     echo "Starting sftpgo..."
     docker compose -f ./sftpgo/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -79,7 +81,7 @@ start_services() {
         print_error "failed to start Sftpgo!"
         exit 1
     fi
-    
+
     echo "Starting slash..."
     docker compose -f ./slash/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -88,7 +90,7 @@ start_services() {
         print_error "failed to start Slash!"
         exit 1
     fi
-    
+
     echo "Starting vaultwarden..."
     docker compose -f ./vaultwarden/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -97,7 +99,7 @@ start_services() {
         print_error "failed to start Vaultwarden!"
         exit 1
     fi
-    
+
     echo "Starting wg-easy..."
     docker compose -f ./wg_easy/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
