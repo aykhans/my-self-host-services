@@ -1,2 +1,3 @@
 /data/*
 /act-data/*
+!.gitkeep
