@@ -1,0 +1,16 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  server:
+#    image: yourselfhosted/slash:latest
+    image: aykhans/slash:1.0.0-rc.0-e
+    container_name: slash
+    restart: unless-stopped
+    networks:
+      - caddy
+    volumes:
+      - ./data/:/var/opt/slash

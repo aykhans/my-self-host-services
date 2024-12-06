@@ -1,0 +1,18 @@
+networks:
+  memos:
+    external: false
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  server:
+    image: neosmemo/memos:0.23.0-pre
+    container_name: memos
+    restart: unless-stopped
+    networks:
+      - memos
+      - caddy
+    volumes:
+      - ./data/:/var/opt/memos

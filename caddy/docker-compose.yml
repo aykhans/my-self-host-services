@@ -1,0 +1,22 @@
+services:
+  caddy:
+    image: caddy:2.8.4
+    container_name: caddy
+    restart: unless-stopped
+    networks:
+      - caddy
+    ports:
+      - "443:443"
+      - "80:80"
+      - "443:443/udp"
+    volumes:
+        - ./Caddyfile:/etc/caddy/Caddyfile
+        - ./ssl:/etc/ssl/custom/
+    env_file:
+      - ./.env
+
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true

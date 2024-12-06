@@ -1,0 +1,18 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  server:
+    image: vaultwarden/server:1.32.5
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+    networks:
+      - caddy
+    volumes:
+      - ./data:/data/

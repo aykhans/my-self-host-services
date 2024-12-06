@@ -1,0 +1,37 @@
+networks:
+  gitea:
+    external: false
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  server:
+    image: gitea/gitea:1.22.3
+    container_name: gitea
+    environment:
+      - USER_UID=${USER_UID}
+      - USER_GID=${USER_GID}
+    restart: unless-stopped
+    networks:
+      - gitea
+      - caddy
+    volumes:
+      - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+  act:
+    image: gitea/act_runner:0.2.11
+    container_name: gitea_act
+    restart: unless-stopped
+    environment:
+      - GITEA_INSTANCE_URL=${GITEA_INSTANCE_URL}
+      - GITEA_RUNNER_REGISTRATION_TOKEN=${GITEA_RUNNER_REGISTRATION_TOKEN}
+      - GITEA_RUNNER_NAME=${GITEA_RUNNER_NAME}
+    networks:
+      - gitea
+    volumes:
+      - ./act-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock

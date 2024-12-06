@@ -1,0 +1,20 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  server:
+    image: drakkan/sftpgo:v2
+    container_name: sftpgo
+    restart: unless-stopped
+    environment:
+      - SFTPGO_COMMON_IDLE_TIMEOUT=${SFTPGO_COMMON_IDLE_TIMEOUT}
+      - SFTPGO_COMMON_UPLOAD_MODE=${SFTPGO_COMMON_UPLOAD_MODE}
+      - SFTPGO_HTTPD__BINDINGS__0__CLIENT_IP_PROXY_HEADER=${SFTPGO_HTTPD__BINDINGS__0__CLIENT_IP_PROXY_HEADER}
+    networks:
+      - caddy
+    volumes:
+      - ./data/data:/srv/sftpgo
+      - ./data/home:/var/lib/sftpgo
