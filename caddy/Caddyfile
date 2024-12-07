@@ -85,7 +85,7 @@
 ############## sftpgo ##############
 {$SFTPGO_DOMAIN} {
     request_body {
-        max_size 5120MB
+        max_size 8120MB
     }
 
     reverse_proxy http://sftpgo:8080 {

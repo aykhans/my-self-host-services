@@ -31,6 +31,28 @@ print_usage() {
     echo "  help: Show this help message"
 }
 
+check_docker() {
+    if ! command -v docker &>/dev/null; then
+        print_error "Docker is not installed."
+        exit 1
+    fi
+}
+
+check_docker_compose() {
+    check_docker
+
+    local docker_compose_cmd=""
+    if command -v docker compose &>/dev/null; then
+        docker_compose_cmd="docker compose"
+    elif command -v docker-compose &> /dev/null; then
+        docker_compose_cmd="docker-compose"
+    else
+        print_error "Docker Compose is not installed."
+        exit 1
+    fi
+    DOCKER_COMPOSE_COMMAND=$docker_compose_cmd
+}
+
 generate_env_files() {
     cp --update=none ./gitea/.env.example ./gitea/.env
     # cp --update=none ./memos/.env.example ./memos/.env
@@ -200,9 +222,11 @@ fi
 
 case $1 in
     start)
+        check_docker_compose
         start_services
         ;;
     stop)
+        check_docker_compose
         stop_services
         ;;
     generate-env)
