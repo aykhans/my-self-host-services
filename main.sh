@@ -69,7 +69,7 @@ start_services() {
     docker network create caddy 2>/dev/null
 
     echo "Starting gitea..."
-    docker compose -f ./gitea/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Gitea started successfully."
     else
@@ -78,7 +78,7 @@ start_services() {
     fi
 
     echo "Starting memos..."
-    docker compose -f ./memos/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Memos started successfully."
     else
@@ -87,7 +87,7 @@ start_services() {
     fi
 
     echo "Starting searxng..."
-    docker compose -f ./searxng/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./searxng/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Searxng started successfully."
     else
@@ -96,7 +96,7 @@ start_services() {
     fi
 
     echo "Starting sftpgo..."
-    docker compose -f ./sftpgo/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./sftpgo/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Sftpgo started successfully."
     else
@@ -105,7 +105,7 @@ start_services() {
     fi
 
     echo "Starting slash..."
-    docker compose -f ./slash/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./slash/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Slash started successfully."
     else
@@ -114,7 +114,7 @@ start_services() {
     fi
 
     echo "Starting vaultwarden..."
-    docker compose -f ./vaultwarden/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./vaultwarden/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Vaultwarden started successfully."
     else
@@ -123,7 +123,7 @@ start_services() {
     fi
 
     echo "Starting wg-easy..."
-    docker compose -f ./wg_easy/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./wg_easy/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Wg-easy started successfully."
     else
@@ -132,7 +132,7 @@ start_services() {
     fi
 
     echo "Starting caddy..."
-    docker compose -f ./caddy/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
         print_success "Caddy started successfully."
     else
@@ -143,7 +143,7 @@ start_services() {
 
 stop_services() {
     echo "Stopping gitea..."
-    docker compose -f ./gitea/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Gitea stopped successfully."
     else
@@ -152,7 +152,7 @@ stop_services() {
     fi
 
     echo "Stopping memos..."
-    docker compose -f ./memos/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Memos stopped successfully."
     else
@@ -161,7 +161,7 @@ stop_services() {
     fi
 
     echo "Stopping searxng..."
-    docker compose -f ./searxng/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./searxng/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Searxng stopped successfully."
     else
@@ -170,7 +170,7 @@ stop_services() {
     fi
 
     echo "Stopping sftpgo..."
-    docker compose -f ./sftpgo/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./sftpgo/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Sftpgo stopped successfully."
     else
@@ -179,7 +179,7 @@ stop_services() {
     fi
 
     echo "Stopping slash..."
-    docker compose -f ./slash/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./slash/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Slash stopped successfully."
     else
@@ -188,7 +188,7 @@ stop_services() {
     fi
 
     echo "Stopping vaultwarden..."
-    docker compose -f ./vaultwarden/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./vaultwarden/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Vaultwarden stopped successfully."
     else
@@ -197,7 +197,7 @@ stop_services() {
     fi
 
     echo "Stopping wg-easy..."
-    docker compose -f ./wg_easy/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./wg_easy/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Wg-easy stopped successfully."
     else
@@ -206,7 +206,7 @@ stop_services() {
     fi
 
     echo "Stopping caddy..."
-    docker compose -f ./caddy/docker-compose.yml down
+    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml down
     if [ $? -eq 0 ]; then
         print_success "Caddy stopped successfully."
     else
