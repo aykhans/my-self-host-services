@@ -8,7 +8,7 @@ networks:
 
 services:
   server:
-    image: neosmemo/memos:0.23.0-pre
+    image: neosmemo/memos:0.23.0
     container_name: memos
     restart: unless-stopped
     networks:
