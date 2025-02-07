@@ -6,7 +6,7 @@ networks:
 
 services:
   server:
-    image: drakkan/sftpgo:v2
+    image: drakkan/sftpgo:v2.6.5
     container_name: sftpgo
     restart: unless-stopped
     environment:
