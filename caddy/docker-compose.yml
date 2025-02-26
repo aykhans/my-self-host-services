@@ -11,6 +11,7 @@ services:
       - "443:443/udp"
     volumes:
         - ./Caddyfile:/etc/caddy/Caddyfile
+        - ./Caddyfile.private:/etc/caddy/Caddyfile.private
         - ./ssl:/etc/ssl/custom/
     env_file:
       - ./.env

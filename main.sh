@@ -55,13 +55,14 @@ check_docker_compose() {
 
 generate_env_files() {
     cp --update=none ./gitea/.env.example ./gitea/.env
-    # cp --update=none ./memos/.env.example ./memos/.env
     cp --update=none ./searxng/.env.example ./searxng/.env
     cp --update=none ./sftpgo/.env.example ./sftpgo/.env
-    # cp --update=none ./slash/.env.example ./slash/.env
     cp --update=none ./vaultwarden/.env.example ./vaultwarden/.env
     cp --update=none ./wg_easy/.env.example ./wg_easy/.env
     cp --update=none ./caddy/.env.example ./caddy/.env
+    cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
+    # cp --update=none ./memos/.env.example ./memos/.env
+    # cp --update=none ./slash/.env.example ./slash/.env
     print_success ".env files generated."
 }
 

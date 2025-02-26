@@ -27,6 +27,7 @@ Edit the generated `.env` files to fill in the required fields:
 - `./vaultwarden/.env`
 - `./wg_easy/.env`
 - `./caddy/.env`
+- `./caddy/Caddyfile.private`
 
 ### 4. Start Services
 Launch all services with the following command:
