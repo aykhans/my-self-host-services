@@ -55,7 +55,6 @@ check_docker_compose() {
 
 generate_env_files() {
     cp --update=none ./gitea/.env.example ./gitea/.env
-    cp --update=none ./searxng/.env.example ./searxng/.env
     cp --update=none ./sftpgo/.env.example ./sftpgo/.env
     cp --update=none ./vaultwarden/.env.example ./vaultwarden/.env
     cp --update=none ./wg_easy/.env.example ./wg_easy/.env
@@ -84,15 +83,6 @@ start_services() {
         print_success "Memos started successfully."
     else
         print_error "failed to start Memos!"
-        exit 1
-    fi
-
-    echo "Starting searxng..."
-    $DOCKER_COMPOSE_COMMAND -f ./searxng/docker-compose.yml up -d
-    if [ $? -eq 0 ]; then
-        print_success "Searxng started successfully."
-    else
-        print_error "failed to start Searxng!"
         exit 1
     fi
 
@@ -158,15 +148,6 @@ stop_services() {
         print_success "Memos stopped successfully."
     else
         print_error "failed to stop Memos!"
-        exit 1
-    fi
-
-    echo "Stopping searxng..."
-    $DOCKER_COMPOSE_COMMAND -f ./searxng/docker-compose.yml down
-    if [ $? -eq 0 ]; then
-        print_success "Searxng stopped successfully."
-    else
-        print_error "failed to stop Searxng!"
         exit 1
     fi
 
