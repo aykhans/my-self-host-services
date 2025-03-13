@@ -1,3 +1,4 @@
 /data/*
 /act-data/*
+!/act-data/config.yaml
 !.gitkeep
