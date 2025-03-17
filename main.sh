@@ -59,6 +59,7 @@ generate_env_files() {
     cp --update=none ./vaultwarden/.env.example ./vaultwarden/.env
     cp --update=none ./wg_easy/.env.example ./wg_easy/.env
     cp --update=none ./caddy/.env.example ./caddy/.env
+    cp --update=none ./glance/.env.example ./glance/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     # cp --update=none ./memos/.env.example ./memos/.env
     # cp --update=none ./slash/.env.example ./slash/.env
@@ -119,6 +120,15 @@ start_services() {
         print_success "Wg-easy started successfully."
     else
         print_error "failed to start Wg-easy!"
+        exit 1
+    fi
+
+    echo "Starting glance..."
+    $DOCKER_COMPOSE_COMMAND -f ./glance/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Glance started successfully."
+    else
+        print_error "failed to start Glance!"
         exit 1
     fi
 
@@ -184,6 +194,15 @@ stop_services() {
         print_success "Wg-easy stopped successfully."
     else
         print_error "failed to stop Wg-easy!"
+        exit 1
+    fi
+
+    echo "Stopping glance..."
+    $DOCKER_COMPOSE_COMMAND -f ./glance/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Glance stopped successfully."
+    else
+        print_error "failed to stop Glance!"
         exit 1
     fi
 

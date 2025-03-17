@@ -96,6 +96,26 @@
     }
 }
 
+############## glance ##############
+{$GLANCE_DOMAIN} {
+    tls /etc/ssl/custom/{$GLANCE_CRT} /etc/ssl/custom/{$GLANCE_KEY}
+
+    basic_auth {
+        {$GLANCE_USERNAME} {$GLANCE_PASSWORD}
+    }
+
+    request_body {
+        max_size 64MB
+    }
+
+    reverse_proxy http://glance:8080 {
+        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
+        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
+        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
+        header_up -CF-*
+    }
+}
+
 
 
 import Caddyfile.private
