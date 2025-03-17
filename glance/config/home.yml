@@ -75,10 +75,6 @@
           widgets:
             - type: hacker-news
             - type: lobsters
-            - type: reddit
-              title: REDDIT/SELFHOSTED
-              subreddit: selfhosted
-              show-thumbnails: true
 
         - type: rss
           limit: 150
