@@ -59,7 +59,7 @@
       widgets:
         - type: custom-api
           title: Memos
-          cache: 6h
+          cache: 1m
           url: https://mem.aykhans.me/api/v1/memos/8ZU65KaQkWobmT8qfKqMyd
           headers:
             Accept: application/json
@@ -89,7 +89,7 @@
 
         - type: custom-api
           title: Seradar
-          cache: 6h
+          cache: 1m
           url: https://seradar.net/api/collections/series/records?page=1&perPage=1000&sort=-new_episodes
           headers:
               Accept: application/json
