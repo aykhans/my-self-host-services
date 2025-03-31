@@ -1,3 +1,6 @@
 /ssl/*
+/data/*
+/data/config/*
+!/data/config/
 !.gitkeep
 Caddyfile.private
