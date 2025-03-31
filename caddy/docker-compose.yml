@@ -13,6 +13,8 @@ services:
         - ./Caddyfile:/etc/caddy/Caddyfile
         - ./Caddyfile.private:/etc/caddy/Caddyfile.private
         - ./ssl:/etc/ssl/custom/
+        - ./data/data:/data
+        - ./data/config:/config
     env_file:
       - ./.env
 
