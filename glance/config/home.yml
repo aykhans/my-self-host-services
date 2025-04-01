@@ -22,9 +22,9 @@
             - title: ftp.aykhans.me
               url: https://ftp.aykhans.me/web/client/login
               icon: /assets/sftpgo.png
-            - title: mem.aykhans.me
-              url: https://mem.aykhans.me/explore
-              icon: /assets/memos.webp
+            - title: notes.aykhans.me
+              url: https://notes.aykhans.me/signin
+              icon: /assets/blinko.png
             - title: url.aykhans.me
               url: https://url.aykhans.me/auth
               icon: /assets/slash.svg
@@ -50,26 +50,10 @@
             - glanceapp/glance
             - go-gitea/gitea
             - drakkan/sftpgo
-            - usememos/memos
+            - blinko-space/blinko
             - yourselfhosted/slash
             - dani-garcia/vaultwarden
             - wg-easy/wg-easy
-
-    - size: full
-      widgets:
-        - type: custom-api
-          title: Memos
-          cache: 1m
-          url: https://mem.aykhans.me/api/v1/memos/8ZU65KaQkWobmT8qfKqMyd
-          headers:
-            Accept: application/json
-            Authorization: Bearer ${MEMOS_TOKEN}
-          template: |
-              {{ if eq .Response.StatusCode 200 }}
-                <div style="white-space: pre-wrap;">{{ .JSON.String "content" }}</div>
-              {{ else }}
-                <p class="color-negative">Failed to fetch Memos data</p>
-              {{ end }}
 
         - type: group
           widgets:
