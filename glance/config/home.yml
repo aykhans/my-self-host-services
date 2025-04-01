@@ -55,6 +55,8 @@
             - dani-garcia/vaultwarden
             - wg-easy/wg-easy
 
+    - size: full
+      widgets:
         - type: group
           widgets:
             - type: hacker-news
