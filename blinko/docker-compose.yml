@@ -8,7 +8,7 @@ networks:
 
 services:
     blinko-website:
-        image: blinkospace/blinko:latest
+        image: blinkospace/blinko:0.49.1
         container_name: blinko-website
         environment:
             NODE_ENV: production
