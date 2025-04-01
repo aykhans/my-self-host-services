@@ -34,15 +34,15 @@
     }
 }
 
-############## memos ##############
-{$MEMOS_DOMAIN} {
-    tls /etc/ssl/custom/{$MEMOS_CRT} /etc/ssl/custom/{$MEMOS_KEY}
+############## blinko ##############
+{$BLINKO_DOMAIN} {
+    tls /etc/ssl/custom/{$BLINKO_CRT} /etc/ssl/custom/{$BLINKO_KEY}
 
     request_body {
-        max_size 128MB
+        max_size 1024MB
     }
 
-    reverse_proxy http://memos:5230 {
+    reverse_proxy http://blinko-website:1111 {
         header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
         header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
         header_up X-Country-Code {http.request.header.Cf-Ipcountry}
