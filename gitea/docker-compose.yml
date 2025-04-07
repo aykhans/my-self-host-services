@@ -21,6 +21,7 @@ services:
       - ./data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    mem_limit: 512m
 
   act:
     image: gitea/act_runner:0.2.11
