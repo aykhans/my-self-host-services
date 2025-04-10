@@ -1,0 +1,27 @@
+apiVersion: 1
+
+providers:
+  # Unique name for the provider
+  - name: 'general'
+    # Organization ID. 1 usually corresponds to the default 'Main Org.'
+    orgId: 1
+    # Optional: Assign dashboards to a specific folder in Grafana UI
+    folder: ''
+    # Provider type: 'file' means loading from filesystem
+    type: file
+    # Optional: Prevents deletion of dashboards from Grafana UI
+    # (they will reappear on restart if deleted)
+    disableDeletion: false
+    # Optional: Allow users to edit dashboards in the Grafana UI.
+    # Changes will be overwritten on restart unless you save them elsewhere.
+    editable: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    # Options specific to the 'file' type provider
+    options:
+      # Path inside the container where Grafana should look for dashboard JSON files.
+      # This MUST match the target path of your dashboard JSON volume mount below.
+      path: /var/lib/grafana/dashboards
+      # Optional: Set to true to automatically update dashboards based on file changes
+      # without restarting Grafana (requires polling).
+      # updateIntervalSeconds: 10

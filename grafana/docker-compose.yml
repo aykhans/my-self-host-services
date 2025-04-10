@@ -1,0 +1,25 @@
+networks:
+    grafana:
+        name: grafana
+        driver: bridge
+        external: true
+    caddy:
+        name: caddy
+        driver: bridge
+        external: true
+
+services:
+    grafana:
+        image: grafana/grafana-enterprise:11.6.0
+        container_name: grafana
+        networks:
+            - grafana
+            - caddy
+        volumes:
+            - grafana-data:/var/lib/grafana
+            - ./data/grafana/dashboards:/var/lib/grafana/dashboards
+            - ./data/provisioning/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+            - ./data/provisioning/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+
+volumes:
+    grafana-data:
