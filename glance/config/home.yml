@@ -54,6 +54,7 @@
             - yourselfhosted/slash
             - dani-garcia/vaultwarden
             - wg-easy/wg-easy
+            - pocketbase/pocketbase
 
     - size: full
       widgets:
