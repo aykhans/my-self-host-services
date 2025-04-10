@@ -63,11 +63,41 @@ generate_env_files() {
     cp --update=none ./blinko/.env.example ./blinko/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     # cp --update=none ./slash/.env.example ./slash/.env
+    # cp --update=none ./grafana/.env.example ./grafana/.env
+    # cp --update=none ./prometheus/.env.example ./prometheus/.env
     print_success ".env files generated."
 }
 
 start_services() {
     docker network create caddy 2>/dev/null
+    docker network create grafana 2>/dev/null
+
+    echo "Starting prometheus..."
+    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Prometheus started successfully."
+    else
+        print_error "failed to start Prometheus!"
+        exit 1
+    fi
+
+    echo "Starting Grafana..."
+    $DOCKER_COMPOSE_COMMAND -f ./grafana/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Grafana started successfully."
+    else
+        print_error "failed to start Grafana!"
+        exit 1
+    fi
+
+    echo "Starting Gitea..."
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Gitea started successfully."
+    else
+        print_error "failed to start Gitea!"
+        exit 1
+    fi
 
     echo "Starting gitea..."
     $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up -d
@@ -143,6 +173,33 @@ start_services() {
 }
 
 stop_services() {
+    echo "Stopping grafana..."
+    $DOCKER_COMPOSE_COMMAND -f ./grafana/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Grafana stopped successfully."
+    else
+        print_error "failed to stop Grafana!"
+        exit 1
+    fi
+
+    echo "Stopping prometheus..."
+    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Prometheus stopped successfully."
+    else
+        print_error "failed to stop Prometheus!"
+        exit 1
+    fi
+
+    echo "Stopping gitea..."
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Gitea stopped successfully."
+    else
+        print_error "failed to stop Gitea!"
+        exit 1
+    fi
+
     echo "Stopping gitea..."
     $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml down
     if [ $? -eq 0 ]; then
