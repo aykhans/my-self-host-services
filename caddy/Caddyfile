@@ -1,5 +1,28 @@
 {
     admin off
+    metrics {
+        per_host
+    }
+}
+
+:2019 {
+    metrics
+}
+
+############## grafana ##############
+{$GRAFANA_DOMAIN} {
+    tls /etc/ssl/custom/{$GRAFANA_CRT} /etc/ssl/custom/{$GRAFANA_KEY}
+
+    request_body {
+        max_size 2048MB
+    }
+
+    reverse_proxy http://grafana:3000 {
+        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
+        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
+        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
+        header_up -CF-*
+    }
 }
 
 ############## gitea ##############
