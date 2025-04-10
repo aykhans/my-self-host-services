@@ -1,3 +1,9 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
 services:
   caddy:
     image: caddy:2.9.1
@@ -17,9 +23,3 @@ services:
         - ./data/config:/config
     env_file:
       - ./.env
-
-networks:
-  caddy:
-    name: caddy
-    driver: bridge
-    external: true
