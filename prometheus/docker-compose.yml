@@ -48,6 +48,8 @@ services:
         privileged: true
         devices:
             - "/dev/kmsg:/dev/kmsg"
+        command:
+            - --disable_metrics=percpu,hugetlb,sched,tcp,udp,advtcp,disk,diskIO,oom_event,perf_event
 
 volumes:
     prometheus-data:
