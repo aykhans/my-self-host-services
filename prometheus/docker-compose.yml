@@ -49,7 +49,7 @@ services:
         devices:
             - "/dev/kmsg:/dev/kmsg"
         command:
-            - --disable_metrics=percpu,hugetlb,sched,tcp,udp,advtcp,disk,diskIO,oom_event,perf_event
+            - --disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp,percpu,disk,diskIO,oom_event,perf_event
 
 volumes:
     prometheus-data:
