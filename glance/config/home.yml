@@ -55,6 +55,8 @@
             - dani-garcia/vaultwarden
             - wg-easy/wg-easy
             - pocketbase/pocketbase
+            - prometheus/prometheus
+            - grafana/grafana
 
     - size: full
       widgets:
