@@ -61,6 +61,7 @@ generate_env_files() {
     cp --update=none ./caddy/.env.example ./caddy/.env
     cp --update=none ./glance/.env.example ./glance/.env
     cp --update=none ./blinko/.env.example ./blinko/.env
+    cp --update=none ./ghost/.env.example ./ghost/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     # cp --update=none ./slash/.env.example ./slash/.env
     # cp --update=none ./grafana/.env.example ./grafana/.env
@@ -162,6 +163,15 @@ start_services() {
         exit 1
     fi
 
+    echo "Starting ghost..."
+    $DOCKER_COMPOSE_COMMAND -f ./ghost/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Ghost started successfully."
+    else
+        print_error "failed to start Ghost!"
+        exit 1
+    fi
+
     echo "Starting caddy..."
     $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -260,6 +270,15 @@ stop_services() {
         print_success "Glance stopped successfully."
     else
         print_error "failed to stop Glance!"
+        exit 1
+    fi
+
+    echo "Stopping ghost..."
+    $DOCKER_COMPOSE_COMMAND -f ./ghost/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Ghost stopped successfully."
+    else
+        print_error "failed to stop Ghost!"
         exit 1
     fi
 
