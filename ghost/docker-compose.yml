@@ -12,8 +12,20 @@ services:
         networks:
             - caddy
         environment:
+            # DB
             database__client: sqlite3
             database__connection__filename: content/data/ghost.db
+            # App
             NODE_ENV: production
+            url: ${URL}
+            # Mail
+            mail__options__host: ${MAIL_HOST}
+            mail__options__port: ${MAIL_PORT}
+            mail__options__secure: ${MAIL_SECURE}
+            mail__options__auth__user: ${MAIL_USERNAME}
+            mail__options__auth__pass: ${MAIL_PASSWORD}
+            mail__from: ${MAIL_FROM}
+            mail__options__service: SMTP
+            mail__transport: SMTP
         volumes:
             - ./data:/var/lib/ghost/content
