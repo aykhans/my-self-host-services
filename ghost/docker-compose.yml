@@ -8,6 +8,7 @@ services:
     ghost:
         image: ghost:5-alpine
         container_name: ghost
+        restart: unless-stopped
         networks:
             - caddy
         environment:
@@ -16,6 +17,3 @@ services:
             NODE_ENV: production
         volumes:
             - ./data:/var/lib/ghost/content
-
-volumes:
-    ghost:
