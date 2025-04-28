@@ -34,6 +34,9 @@
             - title: wg.aykhans.me
               url: https://wg.aykhans.me/
               icon: /assets/wireguard.png
+            - title: aykhans.me
+              url: https://aykhans.me/
+              icon: /assets/ghost.png
 
         - type: docker-containers
           cache: 0s
@@ -57,6 +60,7 @@
             - pocketbase/pocketbase
             - prometheus/prometheus
             - grafana/grafana
+            - TryGhost/Ghost
 
     - size: full
       widgets:
