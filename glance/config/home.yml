@@ -2,164 +2,164 @@
   # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
   # hide-desktop-navigation: true
   columns:
-    - size: small
-      widgets:
-        - type: server-stats
-          servers:
-            - type: local
-              name: Services
+      - size: small
+        widgets:
+            - type: server-stats
+              servers:
+                  - type: local
+                    name: Services
 
-        - type: monitor
-          cache: 1s
-          title: Services
-          sites:
-            - title: seradar.net
-              url: https://seradar.net/auth
-              icon: /assets/seradar.png
-            - title: git.aykhans.me
-              url: https://git.aykhans.me/aykhans
-              icon: /assets/gitea.svg
-            - title: ftp.aykhans.me
-              url: https://ftp.aykhans.me/web/client/login
-              icon: /assets/sftpgo.png
-            - title: notes.aykhans.me
-              url: https://notes.aykhans.me/signin
-              icon: /assets/blinko.png
-            - title: url.aykhans.me
-              url: https://url.aykhans.me/auth
-              icon: /assets/slash.svg
-            - title: vault.aykhans.me
-              url: https://vault.aykhans.me/#/login
-              icon: /assets/vaultwarden.svg
-            - title: wg.aykhans.me
-              url: https://wg.aykhans.me/
-              icon: /assets/wireguard.png
-            - title: aykhans.me
-              url: https://aykhans.me/
-              icon: /assets/ghost.png
+            - type: monitor
+              cache: 1s
+              title: Services
+              sites:
+                  - title: seradar.net
+                    url: https://seradar.net/auth
+                    icon: /assets/seradar.png
+                  - title: git.aykhans.me
+                    url: https://git.aykhans.me/aykhans
+                    icon: /assets/gitea.svg
+                  - title: ftp.aykhans.me
+                    url: https://ftp.aykhans.me/web/client/login
+                    icon: /assets/sftpgo.png
+                  - title: notes.aykhans.me
+                    url: https://notes.aykhans.me/signin
+                    icon: /assets/blinko.png
+                  - title: url.aykhans.me
+                    url: https://url.aykhans.me/auth
+                    icon: /assets/slash.svg
+                  - title: vault.aykhans.me
+                    url: https://vault.aykhans.me/#/login
+                    icon: /assets/vaultwarden.svg
+                  - title: wg.aykhans.me
+                    url: https://wg.aykhans.me/
+                    icon: /assets/wireguard.png
+                  - title: aykhans.me
+                    url: https://aykhans.me/
+                    icon: /assets/ghost.png
 
-        - type: docker-containers
-          cache: 0s
-          hide-by-default: false
+            - type: docker-containers
+              cache: 0s
+              hide-by-default: false
 
-        - type: releases
-          cache: 1d
-          collapse-after: 3
-          # Without authentication the Github API allows for up to 60 requests per hour. You can create a
-          # read-only token from your Github account settings and use it here to increase the limit.
-          token: ${GITHUB_TOKEN}
-          repositories:
-            - caddyserver/caddy
-            - glanceapp/glance
-            - go-gitea/gitea
-            - drakkan/sftpgo
-            - blinko-space/blinko
-            - yourselfhosted/slash
-            - dani-garcia/vaultwarden
-            - wg-easy/wg-easy
-            - pocketbase/pocketbase
-            - prometheus/prometheus
-            - grafana/grafana
-            - TryGhost/Ghost
+            - type: releases
+              cache: 1d
+              collapse-after: 3
+              # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+              # read-only token from your Github account settings and use it here to increase the limit.
+              token: ${GITHUB_TOKEN}
+              repositories:
+                  - caddyserver/caddy
+                  - glanceapp/glance
+                  - go-gitea/gitea
+                  - drakkan/sftpgo
+                  - blinko-space/blinko
+                  - yourselfhosted/slash
+                  - dani-garcia/vaultwarden
+                  - wg-easy/wg-easy
+                  - pocketbase/pocketbase
+                  - prometheus/prometheus
+                  - grafana/grafana
+                  - TryGhost/Ghost
 
-    - size: full
-      widgets:
-        - type: group
-          widgets:
-            - type: hacker-news
-            - type: lobsters
+      - size: full
+        widgets:
+            - type: group
+              widgets:
+                  - type: hacker-news
+                  - type: lobsters
 
-        - type: rss
-          limit: 150
-          collapse-after: 5
-          cache: 1h
-          style: horizontal-cards
-          feeds:
-            - url: https://registerspill.thorstenball.com/feed
-              title: Thorsten Ball
-            - url: https://selfh.st/rss/
-              title: selfh.st
+            - type: rss
+              limit: 150
+              collapse-after: 5
+              cache: 1h
+              style: horizontal-cards
+              feeds:
+                  - url: https://registerspill.thorstenball.com/feed
+                    title: Thorsten Ball
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
 
-        - type: custom-api
-          title: Seradar
-          cache: 1m
-          url: https://seradar.net/api/collections/series/records?page=1&perPage=1000&sort=-new_episodes
-          headers:
-              Accept: application/json
-              Authorization: ${SERADAR_TOKEN}
-          template: |
-                {{ if eq .Response.StatusCode 200 }}
-                    <div class="widget widget-type-rss">
-                        <div
-                            class="widget-content widget-content-frameless"
-                        >
-                            <div
-                                class="carousel-container show-right-cutoff"
-                            >
-                                <div
-                                    class="cards-horizontal carousel-items-container"
-                                >
-                                {{ range .JSON.Array "items" }}
-                                <a
-                                    href="https://www.themoviedb.org/tv/{{ .String "series_id" }}"
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    title="{{ .String "english_name" }}"
-                                >
-                                    <div
-                                        class="card rss-card-2 widget-content-frame thumbnail-parent"
-                                    >
-                                        <img
-                                            class="rss-card-2-image thumbnail cached finished-transition"
-                                            loading="lazy"
-                                            src="{{ .String "poster_path" }}"
-                                            alt="{{ .String "poster_path" }}"
-                                        />
+            - type: custom-api
+              title: Seradar
+              cache: 1m
+              url: https://seradar.net/api/collections/series/records?page=1&perPage=1000&sort=-new_episodes
+              headers:
+                  Accept: application/json
+                  Authorization: ${SERADAR_TOKEN}
+              template: |
+                  {{ if eq .Response.StatusCode 200 }}
+                      <div class="widget widget-type-rss">
+                          <div
+                              class="widget-content widget-content-frameless"
+                          >
+                              <div
+                                  class="carousel-container show-right-cutoff"
+                              >
+                                  <div
+                                      class="cards-horizontal carousel-items-container"
+                                  >
+                                  {{ range .JSON.Array "items" }}
+                                  <a
+                                      href="https://www.themoviedb.org/tv/{{ .String "series_id" }}"
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      title="{{ .String "english_name" }}"
+                                  >
+                                      <div
+                                          class="card rss-card-2 widget-content-frame thumbnail-parent"
+                                      >
+                                          <img
+                                              class="rss-card-2-image thumbnail cached finished-transition"
+                                              loading="lazy"
+                                              src="{{ .String "poster_path" }}"
+                                              alt="{{ .String "poster_path" }}"
+                                          />
 
-                                        <div
-                                            class="rss-card-2-content padding-inline-widget"
-                                        >
-                                            <a
-                                                href="https://www.themoviedb.org/tv/{{ .String "series_id" }}"
-                                                class="text-truncate-3-lines color-positive margin-top-10 size-h4"
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                title="{{ .String "english_name" }}"
-                                                >{{ .String "english_name" }}</a>
-                                            {{ if gt (.Int "new_episodes") 0 }}
-                                                <p class="color-highlight">+{{ .Int "new_episodes" }} new episodes</p>
-                                            {{ else }}
-                                                <p>no new episodes</p>
-                                            {{ end }}
-                                        </div>
-                                    </div>
-                                </a>
-                                {{ end }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {{ else }}
-                    <p class="color-negative">Failed to fetch seradar.net data</p>
-                {{ end }}
+                                          <div
+                                              class="rss-card-2-content padding-inline-widget"
+                                          >
+                                              <a
+                                                  href="https://www.themoviedb.org/tv/{{ .String "series_id" }}"
+                                                  class="text-truncate-3-lines color-positive margin-top-10 size-h4"
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                  title="{{ .String "english_name" }}"
+                                                  >{{ .String "english_name" }}</a>
+                                              {{ if gt (.Int "new_episodes") 0 }}
+                                                  <p class="color-highlight">+{{ .Int "new_episodes" }} new episodes</p>
+                                              {{ else }}
+                                                  <p>no new episodes</p>
+                                              {{ end }}
+                                          </div>
+                                      </div>
+                                  </a>
+                                  {{ end }}
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  {{ else }}
+                      <p class="color-negative">Failed to fetch seradar.net data</p>
+                  {{ end }}
 
-    - size: small
-      widgets:
-        - type: calendar
-          first-day-of-week: monday
+      - size: small
+        widgets:
+            - type: calendar
+              first-day-of-week: monday
 
-        - type: weather
-          location: Baku, Azerbaijan
-          units: metric # alternatively "imperial"
-          hour-format: 12h # alternatively "24h"
+            - type: weather
+              location: Baku, Azerbaijan
+              units: metric # alternatively "imperial"
+              hour-format: 12h # alternatively "24h"
 
-        - type: markets
-          markets:
-            - symbol: BTC-USD
-              name: Bitcoin
-            - symbol: DYDX-USD
-              name: DYDX
-            - symbol: FET-USD
-              name: FET
-            - symbol: SUI20947-USD
-              name: SUI
+            - type: markets
+              markets:
+                  - symbol: BTC-USD
+                    name: Bitcoin
+                  - symbol: DYDX-USD
+                    name: DYDX
+                  - symbol: FET-USD
+                    name: FET
+                  - symbol: SUI20947-USD
+                    name: SUI
