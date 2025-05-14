@@ -123,10 +123,6 @@
 {$GLANCE_DOMAIN} {
     tls /etc/ssl/custom/{$GLANCE_CRT} /etc/ssl/custom/{$GLANCE_KEY}
 
-    basic_auth {
-        {$GLANCE_USERNAME} {$GLANCE_PASSWORD}
-    }
-
     request_body {
         max_size 64MB
     }
