@@ -8,7 +8,7 @@ networks:
 
 services:
   glance:
-    image: glanceapp/glance:v0.8.0
+    image: glanceapp/glance:v0.8.2
     container_name: glance
     restart: unless-stopped
     networks:
