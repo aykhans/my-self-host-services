@@ -1,6 +1,4 @@
 - name: Home
-  # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
-  # hide-desktop-navigation: true
   columns:
       - size: small
         widgets:
@@ -64,6 +62,10 @@
 
       - size: full
         widgets:
+            - type: to-do
+              title: To-Do
+              id: general
+
             - type: group
               widgets:
                   - type: hacker-news
