@@ -10,7 +10,7 @@ networks:
 
 services:
     grafana:
-        image: grafana/grafana-enterprise:12.0.0
+        image: grafana/grafana-enterprise:12.0.1
         container_name: grafana
         networks:
             - grafana
