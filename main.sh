@@ -72,6 +72,7 @@ generate_env_files() {
 start_services() {
     docker network create caddy 2>/dev/null
     docker network create grafana 2>/dev/null
+    docker network create gitea 2>/dev/null
 
     echo "Starting prometheus..."
     $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yml up -d
