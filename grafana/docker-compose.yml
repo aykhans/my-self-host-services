@@ -12,6 +12,7 @@ services:
     grafana:
         image: grafana/grafana-enterprise:12.0.2
         container_name: grafana
+        restart: unless-stopped
         networks:
             - grafana
             - caddy

@@ -14,6 +14,7 @@ services:
     prometheus:
         image: prom/prometheus:v3.4.1
         container_name: prometheus
+        restart: unless-stopped
         networks:
             - prometheus
             - grafana
@@ -26,6 +27,7 @@ services:
     node_exporter:
         image: quay.io/prometheus/node-exporter:v1.9.1
         container_name: node_exporter
+        restart: unless-stopped
         networks:
             - prometheus
         command:
@@ -37,6 +39,7 @@ services:
     cadvisor:
         image: gcr.io/cadvisor/cadvisor:v0.49.1
         container_name: cadvisor
+        restart: unless-stopped
         networks:
             - prometheus
         volumes:
