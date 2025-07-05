@@ -4,9 +4,13 @@ services:
         container_name: wg-easy
         networks:
             caddy:
+                interface_name: wgeth1
             wg:
                 ipv4_address: 10.42.42.42
                 ipv6_address: fdcc:ad94:bacf:61a3::2a
+                interface_name: wgeth0
+        environment:
+            WG_DEVICE: wgeth0
         volumes:
             - ./data:/etc/wireguard
             - /lib/modules:/lib/modules:ro
