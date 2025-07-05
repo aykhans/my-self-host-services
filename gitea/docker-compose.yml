@@ -24,7 +24,7 @@ services:
     deploy:
         resources:
             limits:
-                memory: 512M
+                memory: 1G
 
   act:
     image: gitea/act_runner:0.2.11
