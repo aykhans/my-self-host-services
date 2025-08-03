@@ -26,7 +26,6 @@ Edit the generated `.env` files to fill in the required fields:
 - `./sftpgo/.env`
 - `./vaultwarden/.env`
 - `./wg_easy/.env`
-- `./blinko/.env`
 - `./ghost/.env`
 - `./caddy/.env`
 - `./caddy/Caddyfile.private`

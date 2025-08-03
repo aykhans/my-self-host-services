@@ -22,7 +22,7 @@
                     icon: /assets/sftpgo.png
                   - title: notes.aykhans.me
                     url: https://notes.aykhans.me/signin
-                    icon: /assets/blinko.png
+                    icon: /assets/memos.png
                   - title: url.aykhans.me
                     url: https://url.aykhans.me/auth
                     icon: /assets/slash.svg
@@ -51,7 +51,7 @@
                   - glanceapp/glance
                   - go-gitea/gitea
                   - drakkan/sftpgo
-                  - blinko-space/blinko
+                  - usememos/memos
                   - yourselfhosted/slash
                   - dani-garcia/vaultwarden
                   - wg-easy/wg-easy

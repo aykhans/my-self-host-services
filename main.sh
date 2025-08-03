@@ -60,7 +60,6 @@ generate_env_files() {
     cp --update=none ./wg_easy/.env.example ./wg_easy/.env
     cp --update=none ./caddy/.env.example ./caddy/.env
     cp --update=none ./glance/.env.example ./glance/.env
-    cp --update=none ./blinko/.env.example ./blinko/.env
     cp --update=none ./ghost/.env.example ./ghost/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     # cp --update=none ./slash/.env.example ./slash/.env
@@ -110,12 +109,12 @@ start_services() {
         exit 1
     fi
 
-    echo "Starting blinko..."
-    $DOCKER_COMPOSE_COMMAND -f ./blinko/docker-compose.yml up -d
+    echo "Starting memos..."
+    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
-        print_success "Blinko started successfully."
+        print_success "Memos started successfully."
     else
-        print_error "failed to start Blinko!"
+        print_error "failed to start Memos!"
         exit 1
     fi
 
@@ -220,12 +219,12 @@ stop_services() {
         exit 1
     fi
 
-    echo "Stopping blinko..."
-    $DOCKER_COMPOSE_COMMAND -f ./blinko/docker-compose.yml down
+    echo "Stopping memos..."
+    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml down
     if [ $? -eq 0 ]; then
-        print_success "Blinko stopped successfully."
+        print_success "Memos stopped successfully."
     else
-        print_error "failed to stop Blinko!"
+        print_error "failed to stop Memos!"
         exit 1
     fi
 
