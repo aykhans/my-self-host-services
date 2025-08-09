@@ -32,6 +32,9 @@
                   - title: wg.aykhans.me
                     url: https://wg.aykhans.me/
                     icon: /assets/wireguard.png
+                  - title: photos.aykhans.me
+                    url: https://photos.aykhans.me/
+                    icon: /assets/immich.png
                   - title: aykhans.me
                     url: https://aykhans.me/
                     icon: /assets/ghost.png
