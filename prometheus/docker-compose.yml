@@ -19,7 +19,7 @@ services:
             - prometheus
             - grafana
             - caddy
-        command: "--config.file=/etc/prometheus/prometheus.yaml --storage.tsdb.retention.time=10d --storage.tsdb.retention.size=5GB"
+        command: "--config.file=/etc/prometheus/prometheus.yaml --storage.tsdb.retention.time=10d --storage.tsdb.retention.size=15GB"
         volumes:
             - ./data/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
             - prometheus-data:/prometheus
