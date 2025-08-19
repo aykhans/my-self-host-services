@@ -9,7 +9,7 @@ networks:
 services:
     immich-server:
         container_name: immich_server
-        image: ghcr.io/immich-app/immich-server:release
+        image: ghcr.io/immich-app/immich-server:v1.138.1
         volumes:
             # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
             - ${UPLOAD_LOCATION}:/data
