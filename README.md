@@ -22,11 +22,13 @@ Create `.env` configuration files with the following command:
 Edit the generated `.env` files to fill in the required fields:
 
 - `./gitea/.env`
-- `./searxng/.env`
 - `./sftpgo/.env`
 - `./vaultwarden/.env`
-- `./wg_easy/.env`
+- `./glance/.env`
 - `./ghost/.env`
+- `./immich/.env`
+- `./uptime_kuma/.env`
+- `./croc/.env`
 - `./caddy/.env`
 - `./caddy/Caddyfile.private`
 
