@@ -63,6 +63,7 @@ generate_env_files() {
     cp --update=none ./ghost/.env.example ./ghost/.env
     cp --update=none ./immich/.env.example ./immich/.env
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env
+    cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     # cp --update=none ./slash/.env.example ./slash/.env
     # cp --update=none ./grafana/.env.example ./grafana/.env
@@ -192,6 +193,15 @@ start_services() {
         exit 1
     fi
 
+    echo "Starting croc..."
+    $DOCKER_COMPOSE_COMMAND -f ./croc/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Croc started successfully."
+    else
+        print_error "failed to start Croc!"
+        exit 1
+    fi
+
     echo "Starting caddy..."
     $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml up -d
     if [ $? -eq 0 ]; then
@@ -317,6 +327,15 @@ stop_services() {
         print_success "Uptime kuma stopped successfully."
     else
         print_error "failed to stop Uptime kuma!"
+        exit 1
+    fi
+
+    echo "Stopping croc..."
+    $DOCKER_COMPOSE_COMMAND -f ./croc/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Croc stopped successfully."
+    else
+        print_error "failed to stop Croc!"
         exit 1
     fi
 

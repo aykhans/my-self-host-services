@@ -67,6 +67,7 @@
                   - prometheus/prometheus
                   - grafana/grafana
                   - TryGhost/Ghost
+                  - schollz/croc
 
       - size: full
         widgets:
