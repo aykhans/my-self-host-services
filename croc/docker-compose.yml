@@ -1,6 +1,8 @@
 services:
   croc:
     image: schollz/croc:10
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     ports:
       - "9009-9013:9009-9013"
     env_file: .env

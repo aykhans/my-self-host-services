@@ -210,6 +210,15 @@ start_services() {
         print_error "failed to start Caddy!"
         exit 1
     fi
+
+    echo "Starting watchtower..."
+    $DOCKER_COMPOSE_COMMAND -f ./watchtower/docker-compose.yml up -d
+    if [ $? -eq 0 ]; then
+        print_success "Watchtower started successfully."
+    else
+        print_error "failed to start Watchtower!"
+        exit 1
+    fi
 }
 
 stop_services() {
@@ -345,6 +354,15 @@ stop_services() {
         print_success "Caddy stopped successfully."
     else
         print_error "failed to stop Caddy!"
+        exit 1
+    fi
+
+    echo "Stopping watchtower..."
+    $DOCKER_COMPOSE_COMMAND -f ./watchtower/docker-compose.yml down
+    if [ $? -eq 0 ]; then
+        print_success "Watchtower stopped successfully."
+    else
+        print_error "failed to stop Watchtower!"
         exit 1
     fi
 }

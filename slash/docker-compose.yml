@@ -6,7 +6,7 @@ networks:
 
 services:
   server:
-#    image: yourselfhosted/slash:latest
+    #    image: yourselfhosted/slash:latest
     image: aykhans/slash:1.0.0-rc.0-e
     container_name: slash
     restart: unless-stopped

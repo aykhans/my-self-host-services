@@ -1,0 +1,12 @@
+services:
+  watchtower:
+    image: nickfedor/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - "--label-enable"
+      - "--cleanup"
+      - "--rolling-restart"
+      - "--interval"
+      - "600" # 10 minutes

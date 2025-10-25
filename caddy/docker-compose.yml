@@ -6,9 +6,11 @@ networks:
 
 services:
   caddy:
-    image: caddy:2.10.2-alpine
+    image: caddy:2-alpine
     container_name: caddy
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - caddy
     ports:
@@ -16,11 +18,11 @@ services:
       - "80:80"
       - "443:443/udp"
     volumes:
-        - ./Caddyfile:/etc/caddy/Caddyfile
-        - ./Caddyfile.private:/etc/caddy/Caddyfile.private
-        - ./ssl:/etc/ssl/custom/
-        - ./data/data:/data
-        - ./data/config:/config
-        - ../private_volume:/private_volume
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile.private:/etc/caddy/Caddyfile.private
+      - ./ssl:/etc/ssl/custom/
+      - ./data/data:/data
+      - ./data/config:/config
+      - ../private_volume:/private_volume
     env_file:
       - ./.env

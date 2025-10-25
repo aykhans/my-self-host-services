@@ -1,58 +1,58 @@
 networks:
-    prometheus:
-        external: false
-    grafana:
-        name: grafana
-        driver: bridge
-        external: true
-    caddy:
-        name: caddy
-        driver: bridge
-        external: true
+  prometheus:
+    external: false
+  grafana:
+    name: grafana
+    driver: bridge
+    external: true
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
 
 services:
-    prometheus:
-        image: prom/prometheus:v3.7.2
-        container_name: prometheus
-        restart: unless-stopped
-        networks:
-            - prometheus
-            - grafana
-            - caddy
-        command: "--config.file=/etc/prometheus/prometheus.yaml --storage.tsdb.retention.time=10d --storage.tsdb.retention.size=15GB"
-        volumes:
-            - ./data/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
-            - prometheus-data:/prometheus
+  prometheus:
+    image: prom/prometheus:v3.7.2
+    container_name: prometheus
+    restart: unless-stopped
+    networks:
+      - prometheus
+      - grafana
+      - caddy
+    command: "--config.file=/etc/prometheus/prometheus.yaml --storage.tsdb.retention.time=10d --storage.tsdb.retention.size=15GB"
+    volumes:
+      - ./data/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - prometheus-data:/prometheus
 
-    node_exporter:
-        image: quay.io/prometheus/node-exporter:v1.9.1
-        container_name: node_exporter
-        restart: unless-stopped
-        networks:
-            - prometheus
-        command:
-            - "--path.rootfs=/host"
-        pid: host
-        volumes:
-            - "/:/host:ro,rslave"
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:v1.10.0
+    container_name: node_exporter
+    restart: unless-stopped
+    networks:
+      - prometheus
+    command:
+      - "--path.rootfs=/host"
+    pid: host
+    volumes:
+      - "/:/host:ro,rslave"
 
-    cadvisor:
-        image: gcr.io/cadvisor/cadvisor:v0.49.1
-        container_name: cadvisor
-        restart: unless-stopped
-        networks:
-            - prometheus
-        volumes:
-            - "/:/rootfs:ro"
-            - "/var/run:/var/run:ro"
-            - "/sys:/sys:ro"
-            - "/var/lib/docker/:/var/lib/docker:ro"
-            - "/dev/disk/:/dev/disk:ro"
-        privileged: true
-        devices:
-            - "/dev/kmsg:/dev/kmsg"
-        command:
-            - --disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp,percpu,disk,diskIO,oom_event,perf_event
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    container_name: cadvisor
+    restart: unless-stopped
+    networks:
+      - prometheus
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"
+    privileged: true
+    devices:
+      - "/dev/kmsg:/dev/kmsg"
+    command:
+      - --disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp,percpu,disk,diskIO,oom_event,perf_event
 
 volumes:
-    prometheus-data:
+  prometheus-data:

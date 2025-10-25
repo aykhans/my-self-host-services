@@ -8,8 +8,10 @@ networks:
 
 services:
   server:
-    image: gitea/gitea:1.24.6
+    image: gitea/gitea:1
     container_name: gitea
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     environment:
       - USER_UID=${USER_UID}
       - USER_GID=${USER_GID}
@@ -22,12 +24,12 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     deploy:
-        resources:
-            limits:
-                memory: 1G
+      resources:
+        limits:
+          memory: 1G
 
   act:
-    image: gitea/act_runner:0.2.11
+    image: gitea/act_runner:0.2.13
     container_name: gitea_act
     restart: unless-stopped
     environment:
