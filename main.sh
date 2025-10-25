@@ -77,7 +77,7 @@ start_services() {
     docker network create gitea 2>/dev/null
 
     echo "Starting prometheus..."
-    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Prometheus started successfully."
     else
@@ -86,7 +86,7 @@ start_services() {
     fi
 
     echo "Starting Grafana..."
-    $DOCKER_COMPOSE_COMMAND -f ./grafana/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./grafana/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Grafana started successfully."
     else
@@ -95,7 +95,7 @@ start_services() {
     fi
 
     echo "Starting Gitea..."
-    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Gitea started successfully."
     else
@@ -104,7 +104,7 @@ start_services() {
     fi
 
     echo "Starting gitea..."
-    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./gitea/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Gitea started successfully."
     else
@@ -113,7 +113,7 @@ start_services() {
     fi
 
     echo "Starting memos..."
-    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./memos/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Memos started successfully."
     else
@@ -122,7 +122,7 @@ start_services() {
     fi
 
     echo "Starting sftpgo..."
-    $DOCKER_COMPOSE_COMMAND -f ./sftpgo/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./sftpgo/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Sftpgo started successfully."
     else
@@ -131,7 +131,7 @@ start_services() {
     fi
 
     echo "Starting slash..."
-    $DOCKER_COMPOSE_COMMAND -f ./slash/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./slash/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Slash started successfully."
     else
@@ -140,7 +140,7 @@ start_services() {
     fi
 
     echo "Starting vaultwarden..."
-    $DOCKER_COMPOSE_COMMAND -f ./vaultwarden/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./vaultwarden/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Vaultwarden started successfully."
     else
@@ -149,7 +149,7 @@ start_services() {
     fi
 
     echo "Starting wg-easy..."
-    $DOCKER_COMPOSE_COMMAND -f ./wg_easy/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./wg_easy/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Wg-easy started successfully."
     else
@@ -158,7 +158,7 @@ start_services() {
     fi
 
     echo "Starting glance..."
-    $DOCKER_COMPOSE_COMMAND -f ./glance/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./glance/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Glance started successfully."
     else
@@ -167,7 +167,7 @@ start_services() {
     fi
 
     echo "Starting ghost..."
-    $DOCKER_COMPOSE_COMMAND -f ./ghost/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./ghost/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Ghost started successfully."
     else
@@ -176,7 +176,7 @@ start_services() {
     fi
 
     echo "Starting immich..."
-    $DOCKER_COMPOSE_COMMAND -f ./immich/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./immich/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Immich started successfully."
     else
@@ -185,7 +185,7 @@ start_services() {
     fi
 
     echo "Starting uptime kuma..."
-    $DOCKER_COMPOSE_COMMAND -f ./uptime_kuma/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./uptime_kuma/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Uptime kuma started successfully."
     else
@@ -194,7 +194,7 @@ start_services() {
     fi
 
     echo "Starting croc..."
-    $DOCKER_COMPOSE_COMMAND -f ./croc/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./croc/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Croc started successfully."
     else
@@ -203,7 +203,7 @@ start_services() {
     fi
 
     echo "Starting caddy..."
-    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Caddy started successfully."
     else
@@ -212,7 +212,7 @@ start_services() {
     fi
 
     echo "Starting watchtower..."
-    $DOCKER_COMPOSE_COMMAND -f ./watchtower/docker-compose.yml up -d
+    $DOCKER_COMPOSE_COMMAND -f ./watchtower/docker-compose.yml up --pull -d
     if [ $? -eq 0 ]; then
         print_success "Watchtower started successfully."
     else
