@@ -23,6 +23,7 @@ services:
       - ./ssl:/etc/ssl/custom/
       - ./data/data:/data
       - ./data/config:/config
+      - ./data/log:/var/log/caddy
       - ../private_volume:/private_volume
     env_file:
       - ./.env

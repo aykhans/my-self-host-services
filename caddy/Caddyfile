@@ -3,6 +3,11 @@
     metrics {
         per_host
     }
+    log {
+        output file /var/log/caddy/access.log
+        format json
+        level DEBUG
+    }
 }
 
 :2019 {
