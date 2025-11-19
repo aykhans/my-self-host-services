@@ -7,6 +7,7 @@ networks:
 services:
   memos:
     image: neosmemo/memos:0.25
+    restart: unless-stopped
     container_name: memos
     labels:
       - "com.centurylinklabs.watchtower.enable=true"

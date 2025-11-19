@@ -11,98 +11,56 @@
 
 ############## grafana ##############
 {$GRAFANA_DOMAIN} {
-    tls /etc/ssl/custom/{$GRAFANA_CRT} /etc/ssl/custom/{$GRAFANA_KEY}
-
     request_body {
         max_size 2048MB
     }
 
-    reverse_proxy http://grafana:3000 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://grafana:3000
 }
 
 ############## gitea ##############
 {$GITEA_DOMAIN} {
-    tls /etc/ssl/custom/{$GITEA_CRT} /etc/ssl/custom/{$GITEA_KEY}
-
     request_body {
         max_size 512MB
     }
 
-    reverse_proxy http://gitea:3000 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://gitea:3000
 }
 
 ############## slash ##############
 {$SLASH_DOMAIN} {
-    tls /etc/ssl/custom/{$SLASH_CRT} /etc/ssl/custom/{$SLASH_KEY}
-
     request_body {
         max_size 10MB
     }
 
-    reverse_proxy http://slash:5231 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://slash:5231
 }
 
 ############## memos ##############
 {$MEMOS_DOMAIN} {
-    tls /etc/ssl/custom/{$MEMOS_CRT} /etc/ssl/custom/{$MEMOS_KEY}
-
     request_body {
         max_size 1024MB
     }
 
-    reverse_proxy http://memos:5230 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://memos:5230
 }
 
 ############## wg-easy ##############
 {$WG_EASY_DOMAIN} {
-    tls /etc/ssl/custom/{$WG_EASY_CRT} /etc/ssl/custom/{$WG_EASY_KEY}
-
     request_body {
         max_size 10MB
     }
 
-    reverse_proxy http://wg-easy:51821 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://wg-easy:51821
 }
 
 ############## vaultwarden ##############
 {$VAULTWARDEN_DOMAIN} {
-    tls /etc/ssl/custom/{$VAULTWARDEN_CRT} /etc/ssl/custom/{$VAULTWARDEN_KEY}
-
     request_body {
         max_size 128MB
     }
 
-    reverse_proxy http://vaultwarden {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://vaultwarden
 }
 
 ############## sftpgo ##############
@@ -111,81 +69,51 @@
         max_size 8120MB
     }
 
-    reverse_proxy http://sftpgo:8080 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://sftpgo:8080
 }
 
 ############## glance ##############
 {$GLANCE_DOMAIN} {
-    tls /etc/ssl/custom/{$GLANCE_CRT} /etc/ssl/custom/{$GLANCE_KEY}
-
     request_body {
         max_size 64MB
     }
 
-    reverse_proxy http://glance:8080 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
-        header_up -CF-*
-    }
+    reverse_proxy http://glance:8080
 }
 
 ############## ghost ##############
 {$GHOST_DOMAIN} {
-    tls /etc/ssl/custom/{$GHOST_CRT} /etc/ssl/custom/{$GHOST_KEY}
-
     request_body {
         max_size 124MB
     }
 
     reverse_proxy http://ghost:2368 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
         header_up X-Forwarded-Proto {http.request.scheme}
         header_up Host {http.request.host}
-        header_up -CF-*
     }
 }
 
 ############## immich ##############
 {$IMMICH_DOMAIN} {
-    tls /etc/ssl/custom/{$IMMICH_CRT} /etc/ssl/custom/{$IMMICH_KEY}
-
     request_body {
         max_size 1024MB
     }
 
     reverse_proxy http://immich_server:2283 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
         header_up X-Forwarded-Proto {http.request.scheme}
         header_up Host {http.request.host}
-        header_up -CF-*
     }
 }
 
 ############## uptime-kuma ##############
 {$UPTIME_KUMA_DOMAIN} {
-    tls /etc/ssl/custom/{$UPTIME_KUMA_CRT} /etc/ssl/custom/{$UPTIME_KUMA_KEY}
-
     request_body {
         max_size 1024MB
     }
 
     reverse_proxy http://uptime_kuma:3001 {
-        header_up X-Real-IP {http.request.header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {http.request.header.Cf-Connecting-Ip}
-        header_up X-Country-Code {http.request.header.Cf-Ipcountry}
         header_up X-Forwarded-Proto {http.request.scheme}
         header_up Host {http.request.host}
-        header_up -CF-*
     }
 }
 
