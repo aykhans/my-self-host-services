@@ -7,41 +7,6 @@
                   - type: local
                     name: Services
 
-            - type: monitor
-              cache: 1s
-              title: Services
-              sites:
-                  - title: seradar.net
-                    url: https://seradar.net/auth
-                    icon: /assets/seradar.png
-                  - title: git.aykhans.me
-                    url: https://git.aykhans.me/aykhans
-                    icon: /assets/gitea.svg
-                  - title: ftp.aykhans.me
-                    url: https://ftp.aykhans.me/web/client/login
-                    icon: /assets/sftpgo.png
-                  - title: notes.aykhans.me
-                    url: https://notes.aykhans.me/signin
-                    icon: /assets/memos.png
-                  - title: url.aykhans.me
-                    url: https://url.aykhans.me/auth
-                    icon: /assets/slash.svg
-                  - title: vault.aykhans.me
-                    url: https://vault.aykhans.me/#/login
-                    icon: /assets/vaultwarden.svg
-                  - title: wg.aykhans.me
-                    url: https://wg.aykhans.me/
-                    icon: /assets/wireguard.png
-                  - title: photos.aykhans.me
-                    url: https://photos.aykhans.me/
-                    icon: /assets/immich.png
-                  - title: up.aykhans.me
-                    url: https://up.aykhans.me/
-                    icon: /assets/uptime_kuma.png
-                  - title: aykhans.me
-                    url: https://aykhans.me/
-                    icon: /assets/ghost.png
-
             - type: docker-containers
               cache: 0s
               hide-by-default: false
@@ -68,6 +33,7 @@
                   - grafana/grafana
                   - TryGhost/Ghost
                   - schollz/croc
+                  - stalwartlabs/stalwart
 
       - size: full
         widgets:

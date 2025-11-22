@@ -122,4 +122,13 @@
     }
 }
 
+############## stalwart ##############
+{$STALWART_DOMAIN} {
+    request_body {
+        max_size 4048MB
+    }
+
+    reverse_proxy http://stalwart:8080
+}
+
 import Caddyfile.private

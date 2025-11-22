@@ -1,6 +1,4 @@
 networks:
-  glance:
-    external: false
   caddy:
     name: caddy
     driver: bridge

@@ -1,0 +1,28 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  stalwart:
+    image: stalwartlabs/stalwart:v0.14
+    container_name: stalwart
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - caddy
+    ports:
+      - "25:25"
+      - "587:587"
+      - "465:465"
+      - "143:143"
+      - "993:993"
+      - "4190:4190"
+      - "110:110"
+      - "995:995"
+    volumes:
+      - ./data:/opt/stalwart
+      - ../caddy/data/data/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.aykhans.me/mail.aykhans.me.crt:/opt/stalwart/cert/mail.aykhans.me.pem
+      - ../caddy/data/data/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.aykhans.me/mail.aykhans.me.key:/opt/stalwart/cert/mail.aykhans.me.priv.pem

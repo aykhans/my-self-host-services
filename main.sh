@@ -219,6 +219,15 @@ start_services() {
         print_error "failed to start Watchtower!"
         exit 1
     fi
+
+    echo "Starting stalwart..."
+    $DOCKER_COMPOSE_COMMAND -f ./stalwart/docker-compose.yaml up --pull -d
+    if [ $? -eq 0 ]; then
+        print_success "Stalwart started successfully."
+    else
+        print_error "failed to start Stalwart!"
+        exit 1
+    fi
 }
 
 stop_services() {
@@ -363,6 +372,15 @@ stop_services() {
         print_success "Watchtower stopped successfully."
     else
         print_error "failed to stop Watchtower!"
+        exit 1
+    fi
+
+    echo "Stopping stalwart..."
+    $DOCKER_COMPOSE_COMMAND -f ./stalwart/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Stalwart stopped successfully."
+    else
+        print_error "failed to stop Stalwart!"
         exit 1
     fi
 }
