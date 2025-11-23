@@ -2,6 +2,22 @@
 - **Bash**
 - **Docker**
 - **Docker compose**
+- **Ports:**
+  - **Caddy**
+    - 80/tcp (HTTP)
+    - 443/tcp (HTTPS)
+  - **Stalwart**
+    - 25/tcp (SMTP)
+    - 110/tcp (POP3)
+    - 995/tcp (POP3S)
+    - 143/tcp (IMAP)
+    - 993/tcp (IMAPS)
+    - 465/tcp (SMTPS)
+    - 587/tcp (SUBMISSION)
+  - **Croc**
+    - 9009/tcp (PICHAT)
+    - 9010/tcp (SDR)
+    - 9011/tcp (D-STAR)
 
 ## Getting Started
 
