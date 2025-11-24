@@ -52,6 +52,7 @@ services:
     devices:
       - "/dev/kmsg:/dev/kmsg"
     command:
+      - -docker_only
       - --disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp,percpu,disk,diskIO,oom_event,perf_event
 
 volumes:
