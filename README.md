@@ -18,6 +18,8 @@
     - 9009/tcp (PICHAT)
     - 9010/tcp (SDR)
     - 9011/tcp (D-STAR)
+  - **SFTPGo**
+    - 2022/tcp (SFTP)
 
 ## Getting Started
 

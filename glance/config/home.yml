@@ -7,10 +7,6 @@
                   - type: local
                     name: Services
 
-            - type: docker-containers
-              cache: 0s
-              hide-by-default: false
-
             - type: releases
               cache: 1d
               collapse-after: 5
@@ -35,12 +31,12 @@
                   - schollz/croc
                   - stalwartlabs/stalwart
 
+            - type: docker-containers
+              cache: 0s
+              hide-by-default: false
+
       - size: full
         widgets:
-            - type: to-do
-              title: To-Do
-              id: general
-
             - type: group
               widgets:
                   - type: hacker-news
@@ -52,8 +48,6 @@
               cache: 1h
               style: horizontal-cards
               feeds:
-                  - url: https://registerspill.thorstenball.com/feed
-                    title: Thorsten Ball
                   - url: https://selfh.st/rss/
                     title: selfh.st
 

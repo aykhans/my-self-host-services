@@ -10,7 +10,6 @@ services:
     container_name: glance
     restart: unless-stopped
     networks:
-      - glance
       - caddy
     volumes:
       - ./config:/app/config

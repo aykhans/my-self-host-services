@@ -9,6 +9,8 @@ services:
     image: drakkan/sftpgo:v2
     container_name: sftpgo
     restart: unless-stopped
+    ports:
+      - 2022:2022
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
