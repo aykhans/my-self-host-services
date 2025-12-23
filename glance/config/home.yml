@@ -50,6 +50,8 @@
               feeds:
                   - url: https://selfh.st/rss/
                     title: selfh.st
+                  - url: https://antonz.org/index.xml
+                    title: antonz.org
 
       - size: small
         widgets:

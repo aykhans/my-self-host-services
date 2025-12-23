@@ -24,6 +24,7 @@ services:
       - ./data/data:/data
       - ./data/config:/config
       - ./data/log:/var/log/caddy
+      - ../volume:/volume
       - ../private_volume:/private_volume
     env_file:
       - ./.env

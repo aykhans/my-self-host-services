@@ -131,4 +131,12 @@
     reverse_proxy http://stalwart:8080
 }
 
+############## textarea ##############
+{$TEXTAREA_DOMAIN} {
+    root * /volume/textarea
+    file_server {
+        browse off
+    }
+}
+
 import Caddyfile.private
