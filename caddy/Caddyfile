@@ -139,4 +139,13 @@
     }
 }
 
+############## gopkg-proxy ##############
+{$GOPKG_PROXY_DOMAIN} {
+    request_body {
+        max_size 2MB
+    }
+
+    reverse_proxy http://gopkg_proxy:8421
+}
+
 import Caddyfile.private

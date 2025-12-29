@@ -65,9 +65,6 @@ generate_env_files() {
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env
     cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
-    # cp --update=none ./slash/.env.example ./slash/.env
-    # cp --update=none ./grafana/.env.example ./grafana/.env
-    # cp --update=none ./prometheus/.env.example ./prometheus/.env
     print_success ".env files generated."
 }
 
@@ -228,6 +225,15 @@ start_services() {
         print_error "failed to start Stalwart!"
         exit 1
     fi
+
+    echo "Starting gopkg proxy..."
+    $DOCKER_COMPOSE_COMMAND -f ./gopkg_proxy/docker-compose.yaml up --pull -d
+    if [ $? -eq 0 ]; then
+        print_success "Gopkg proxy started successfully."
+    else
+        print_error "failed to start Gopkg proxy!"
+        exit 1
+    fi
 }
 
 stop_services() {
@@ -381,6 +387,15 @@ stop_services() {
         print_success "Stalwart stopped successfully."
     else
         print_error "failed to stop Stalwart!"
+        exit 1
+    fi
+
+    echo "Stopping gopkg proxy..."
+    $DOCKER_COMPOSE_COMMAND -f ./gopkg_proxy/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Gopkg proxy stopped successfully."
+    else
+        print_error "failed to stop Gopkg proxy!"
         exit 1
     fi
 }
