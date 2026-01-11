@@ -67,9 +67,7 @@
               markets:
                   - symbol: BTC-USD
                     name: Bitcoin
-                  - symbol: DYDX-USD
-                    name: DYDX
-                  - symbol: FET-USD
-                    name: FET
                   - symbol: SUI20947-USD
                     name: SUI
+                  - symbol: ASTER36341-USD
+                    name: ASTER
