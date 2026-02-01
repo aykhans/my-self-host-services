@@ -1,15 +1,15 @@
 networks:
-    caddy:
-        name: caddy
-        driver: bridge
-        external: true
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
 
 services:
-    gopkg-proxy:
-        image: aykhans/gopkg-proxy:latest
-        container_name: gopkg_proxy
-        restart: unless-stopped
-        labels:
-            - "com.centurylinklabs.watchtower.enable=true"
-        networks:
-            - caddy
+  gopkg-proxy:
+    image: aykhans/gopkg-proxy:latest
+    container_name: gopkg_proxy
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - caddy

@@ -19,7 +19,8 @@ services:
       database__connection__filename: content/data/ghost.db
       # App
       NODE_ENV: production
-      url: ${URL}
+      url: https://aykhans.me
+      site__url: https://aykhans.me
       # Mail
       mail__options__host: ${MAIL_HOST}
       mail__options__port: ${MAIL_PORT}
