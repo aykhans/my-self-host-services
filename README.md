@@ -20,6 +20,8 @@
     - 9011/tcp (D-STAR)
   - **SFTPGo**
     - 2022/tcp (SFTP)
+  - **WireGuard Easy**
+    - 51820/udp (WireGuard)
 
 ## Getting Started
 
