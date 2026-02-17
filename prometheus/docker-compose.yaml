@@ -23,6 +23,11 @@ services:
     volumes:
       - ./data/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
       - prometheus-data:/prometheus
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:v1.10.0
@@ -35,6 +40,11 @@ services:
     pid: host
     volumes:
       - "/:/host:ro,rslave"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.52.1
@@ -56,6 +66,11 @@ services:
       - -housekeeping_interval=3s
       - -storage_duration=2m
       - -docker_only
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
 
 volumes:
   prometheus-data:

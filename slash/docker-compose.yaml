@@ -14,3 +14,8 @@ services:
       - caddy
     volumes:
       - ./data/:/var/opt/slash
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

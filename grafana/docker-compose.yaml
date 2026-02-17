@@ -23,6 +23,11 @@ services:
       - ./data/grafana/dashboards:/var/lib/grafana/dashboards
       - ./data/provisioning/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./data/provisioning/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
 
 volumes:
   grafana-data:

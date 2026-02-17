@@ -10,3 +10,8 @@ services:
       - "--rolling-restart"
       - "--interval"
       - "600" # 10 minutes
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

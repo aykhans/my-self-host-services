@@ -28,3 +28,8 @@ services:
       - ../private_volume:/private_volume
     env_file:
       - ./.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

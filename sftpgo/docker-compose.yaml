@@ -22,3 +22,8 @@ services:
     volumes:
       - ./data/data:/srv/sftpgo
       - ./data/home:/var/lib/sftpgo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

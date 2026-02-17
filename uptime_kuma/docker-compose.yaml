@@ -18,3 +18,8 @@ services:
       caddy: ${CADDY_DOMAIN}
       caddy.reverse_proxy: "* {{upstreams 3001}}"
       com.centurylinklabs.watchtower.enable: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

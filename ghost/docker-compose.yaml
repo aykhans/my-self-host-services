@@ -32,3 +32,8 @@ services:
       mail__transport: SMTP
     volumes:
       - ./data:/var/lib/ghost/content
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
