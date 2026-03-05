@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  ech0:
+    image: aykhans/ech0:latest
+    container_name: ech0
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    environment:
+      PORT: 8421
+      REMOTE_ADDR_HEADER: X-Forwarded-For
+    networks:
+      - caddy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

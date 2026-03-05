@@ -148,4 +148,24 @@
     reverse_proxy http://gopkg_proxy:8421
 }
 
+############## ech0 ##############
+{$ECH0_DOMAIN} {
+    header -Server
+
+    request_body {
+        max_size 5MB
+    }
+
+    reverse_proxy http://ech0:8421 {
+        # wheader_up -X-Forwarded-For
+        header_up -X-Forwarded-Host
+        header_up -X-Forwarded-Proto
+        header_up -Via
+
+        transport http {
+            compression off
+        }
+    }
+}
+
 import Caddyfile.private

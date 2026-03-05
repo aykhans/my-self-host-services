@@ -234,6 +234,15 @@ start_services() {
         print_error "failed to start Gopkg proxy!"
         exit 1
     fi
+
+    echo "Starting ech0..."
+    $DOCKER_COMPOSE_COMMAND -f ./ech0/docker-compose.yaml up --pull -d
+    if [ $? -eq 0 ]; then
+        print_success "Ech0 started successfully."
+    else
+        print_error "failed to start Ech0!"
+        exit 1
+    fi
 }
 
 stop_services() {
@@ -396,6 +405,15 @@ stop_services() {
         print_success "Gopkg proxy stopped successfully."
     else
         print_error "failed to stop Gopkg proxy!"
+        exit 1
+    fi
+
+    echo "Stopping ech0..."
+    $DOCKER_COMPOSE_COMMAND -f ./ech0/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Ech0 stopped successfully."
+    else
+        print_error "failed to stop ech0!"
         exit 1
     fi
 }
