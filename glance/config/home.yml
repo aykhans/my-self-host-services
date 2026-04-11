@@ -39,8 +39,8 @@
         widgets:
             - type: group
               widgets:
-                  - type: hacker-news
                   - type: lobsters
+                  - type: hacker-news
 
             - type: rss
               limit: 150
