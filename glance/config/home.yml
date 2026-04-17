@@ -50,6 +50,8 @@
               feeds:
                   - url: https://selfh.st/rss/
                     title: selfh.st
+                  - url: https://blog.tangled.org/feed.xml
+                    title: tangled.org
                   - url: https://antonz.org/index.xml
                     title: antonz.org
 
