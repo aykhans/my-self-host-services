@@ -63,6 +63,7 @@ generate_env_files() {
     cp --update=none ./immich/.env.example ./immich/.env
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env
     cp --update=none ./croc/.env.example ./croc/.env
+    cp --update=none ./stalwart/.env.example ./stalwart/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     print_success ".env files generated."
 }

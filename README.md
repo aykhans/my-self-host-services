@@ -48,6 +48,7 @@ Edit the generated `.env` files to fill in the required fields:
 - `./immich/.env`
 - `./uptime_kuma/.env`
 - `./croc/.env`
+- `./stalwart/.env`
 - `./caddy/.env`
 - `./caddy/Caddyfile.private`
 
