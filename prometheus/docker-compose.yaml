@@ -47,7 +47,7 @@ services:
         max-file: "3"
 
   cadvisor:
-    image: docker pull ghcr.io/google/cadvisor:0.56
+    image: ghcr.io/google/cadvisor:0.56
     container_name: cadvisor
     restart: unless-stopped
     networks:
