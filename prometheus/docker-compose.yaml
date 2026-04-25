@@ -12,7 +12,7 @@ networks:
 
 services:
   prometheus:
-    image: prom/prometheus:v3.7.2
+    image: prom/prometheus:v3
     container_name: prometheus
     restart: unless-stopped
     networks:
@@ -30,7 +30,7 @@ services:
         max-file: "3"
 
   node_exporter:
-    image: quay.io/prometheus/node-exporter:v1.10.0
+    image: quay.io/prometheus/node-exporter:v1
     container_name: node_exporter
     restart: unless-stopped
     networks:
@@ -47,7 +47,7 @@ services:
         max-file: "3"
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    image: docker pull ghcr.io/google/cadvisor:0.56
     container_name: cadvisor
     restart: unless-stopped
     networks:

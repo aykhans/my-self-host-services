@@ -6,7 +6,7 @@ networks:
 
 services:
   stalwart:
-    image: stalwartlabs/stalwart:v0.15
+    image: stalwartlabs/stalwart:v0.16
     container_name: stalwart
     restart: unless-stopped
     labels:

@@ -29,7 +29,7 @@ services:
           memory: 1G
 
   act:
-    image: gitea/act_runner:0.2.13
+    image: gitea/act_runner:0
     container_name: gitea_act
     restart: unless-stopped
     environment:
