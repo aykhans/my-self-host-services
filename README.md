@@ -14,10 +14,9 @@
     - 993/tcp (IMAPS)
     - 465/tcp (SMTPS)
     - 587/tcp (SUBMISSION)
+    - 4190/tcp (ManageSieve)
   - **Croc**
-    - 9009/tcp (PICHAT)
-    - 9010/tcp (SDR)
-    - 9011/tcp (D-STAR)
+    - 9009-9013/tcp (relay)
   - **SFTPGo**
     - 2022/tcp (SFTP)
   - **WireGuard Easy**
