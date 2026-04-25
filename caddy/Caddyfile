@@ -123,12 +123,16 @@
 }
 
 ############## stalwart ##############
-{$STALWART_DOMAIN} {
+{$STALWART_DOMAIN}, {$STALWART_AUTOCONFIG_DOMAIN}, {$STALWART_AUTODISCOVER_DOMAIN} {
     request_body {
         max_size 4048MB
     }
 
-    reverse_proxy http://stalwart:8080
+    reverse_proxy http://stalwart:8080 {
+        header_up X-Forwarded-Proto {http.request.scheme}
+        header_up X-Forwarded-For {http.request.remote_host}
+        header_up Host {http.request.host}
+    }
 }
 
 ############## textarea ##############
