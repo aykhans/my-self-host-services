@@ -53,6 +53,7 @@ services:
       STALWART_PASSWORD: "${STALWART_BOOTSTRAP_PASSWORD}"
       STALWART_DEFAULT_HOSTNAME: "mail.aykhans.me"
       STALWART_DEFAULT_DOMAIN: "aykhans.me"
+      STALWART_PROXY_NETWORK: "172.18.0.0/16"
     volumes:
       - ./plan.json:/plan.json:ro
     entrypoint: ["/bin/sh", "-c"]
@@ -72,10 +73,16 @@ services:
         # 3) Idempotent SystemSettings update (singleton)
         stalwart-cli update SystemSettings --field "defaultHostname=$$STALWART_DEFAULT_HOSTNAME" --field "defaultDomainId=$$DOMAIN_ID"
 
-        # 4) Trust X-Forwarded-* headers from Caddy (real client IP for security/rate-limit)
+        # 4) Trust X-Forwarded-* headers from Caddy (real client IP for HTTP-level checks)
         stalwart-cli update Http --field useXForwarded=true
 
-        # 5) Trigger settings reload so url_https recomputes (no restart needed)
+        # 5) Whitelist the reverse-proxy network from auto-ban (port-scan/loitering counters
+        #    operate at TCP-source-IP level and would otherwise ban Caddy itself).
+        if ! stalwart-cli query AllowedIp 2>/dev/null | grep -q "$$STALWART_PROXY_NETWORK"; then
+          stalwart-cli create AllowedIp --field "address=$$STALWART_PROXY_NETWORK" --field "reason=Reverse proxy network"
+        fi
+
+        # 6) Trigger settings reload so url_https recomputes (no restart needed)
         stalwart-cli create Action/ReloadSettings --json "{}"
 
         echo "Bootstrap complete"
