@@ -210,10 +210,15 @@ start_services() {
 
     echo "Starting stalwart..."
     $DOCKER_COMPOSE_COMMAND -f ./stalwart/docker-compose.yaml up --pull always -d
+    if [ $? -ne 0 ]; then
+        print_error "failed to start Stalwart!"
+        exit 1
+    fi
+    $DOCKER_COMPOSE_COMMAND -f ./stalwart/docker-compose.yaml run --rm --pull always stalwart-bootstrap
     if [ $? -eq 0 ]; then
         print_success "Stalwart started successfully."
     else
-        print_error "failed to start Stalwart!"
+        print_error "Stalwart bootstrap failed!"
         exit 1
     fi
 

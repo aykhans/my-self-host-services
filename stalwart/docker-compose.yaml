@@ -40,6 +40,7 @@ services:
         max-file: "3"
 
   stalwart-bootstrap:
+    profiles: [bootstrap]
     build:
       context: .
       dockerfile: Dockerfile.bootstrap
@@ -71,7 +72,10 @@ services:
         # 3) Idempotent SystemSettings update (singleton)
         stalwart-cli update SystemSettings --field "defaultHostname=$$STALWART_DEFAULT_HOSTNAME" --field "defaultDomainId=$$DOMAIN_ID"
 
-        # 4) Trigger settings reload so url_https recomputes (no restart needed)
+        # 4) Trust X-Forwarded-* headers from Caddy (real client IP for security/rate-limit)
+        stalwart-cli update Http --field useXForwarded=true
+
+        # 5) Trigger settings reload so url_https recomputes (no restart needed)
         stalwart-cli create Action/ReloadSettings --json "{}"
 
         echo "Bootstrap complete"
