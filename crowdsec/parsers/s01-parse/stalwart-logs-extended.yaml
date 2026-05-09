@@ -1,0 +1,15 @@
+name: stalwart/parse-extended
+description: Parse Stalwart logs including key fields without kv parser
+stage: s01-parse
+onsuccess: next_stage
+filter: "evt.Parsed.program == 'stalwart' || evt.Line.Labels.type == 'stalwart'"
+
+nodes:
+  - grok:
+      apply_on: Line.Raw
+      pattern: '^%{TIMESTAMP_ISO8601:timestamp}\s+%{WORD:log_level}\s+%{DATA:message_text}\s+\(%{DATA:event_type}\)\s*(?:listenerId\s*=\s*"%{DATA:listenerId}",\s*)?(?:localPort\s*=\s*%{INT:localPort},\s*)?(?:remoteIp\s*=\s*%{IP:remoteIp},\s*)?(?:remotePort\s*=\s*%{INT:remotePort},\s*)?(?:reason\s*=\s*"%{DATA:reason}")?.*$'
+    statics:
+      - meta: source_ip
+        expression: evt.Parsed.remoteIp
+      - meta: service
+        value: stalwart

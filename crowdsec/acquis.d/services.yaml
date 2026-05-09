@@ -1,0 +1,26 @@
+source: docker
+container_name:
+  - gitea
+labels:
+  type: gitea
+follow_stdout: true
+follow_stderr: true
+check_interval: 5s
+---
+source: docker
+container_name:
+  - vaultwarden
+labels:
+  type: vaultwarden
+follow_stdout: true
+follow_stderr: true
+check_interval: 5s
+---
+source: docker
+container_name:
+  - stalwart
+labels:
+  type: stalwart
+follow_stdout: true
+follow_stderr: true
+check_interval: 5s

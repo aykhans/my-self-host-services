@@ -1,0 +1,10 @@
+name: stalwart/parse-logs
+description: Raw parser for Stalwart logs
+stage: s00-raw
+onsuccess: next_stage
+filter: "evt.Parsed.program == 'stalwart' || evt.Line.Labels.type == 'stalwart'"
+
+nodes:
+  - grok:
+      apply_on: Line.Raw
+      pattern: '^%{TIMESTAMP_ISO8601:timestamp}\s+%{WORD:log_level}\s+%{DATA:message_text}\s*\(%{DATA:event_type}\)\s*(%{GREEDYDATA:kvpairs})?$'

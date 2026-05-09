@@ -1,0 +1,8 @@
+source: docker
+container_name:
+  - caddy
+labels:
+  type: caddy
+follow_stdout: true
+follow_stderr: true
+check_interval: 5s

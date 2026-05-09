@@ -1,0 +1,13 @@
+type: leaky
+name: aykhans/stalwart-auth-bruteforce
+description: Detect SMTP/IMAP/POP3 authentication brute force on Stalwart
+filter: |
+  evt.Parsed.event_type == "auth.failed"
+groupby: evt.Meta.source_ip
+capacity: 3
+leakspeed: 10m
+blackhole: 1h
+labels:
+  type: bruteforce
+  service: stalwart
+  remediation: true

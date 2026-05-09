@@ -3,11 +3,30 @@
     metrics {
         per_host
     }
-#    log {
-#        output file /var/log/caddy/access.log
-#        format json
-#        level DEBUG
-#    }
+
+    crowdsec {
+        api_url        http://crowdsec:8080
+        api_key        {env.CROWDSEC_API_KEY}
+        ticker_interval 15s
+        appsec_url     http://crowdsec:7422
+    }
+
+    servers {
+        trusted_proxies static private_ranges
+        client_ip_headers X-Forwarded-For
+    }
+}
+
+(access-log) {
+    log {
+        output stdout
+        format json
+    }
+}
+
+(security) {
+    crowdsec
+    appsec
 }
 
 :2019 {
@@ -16,158 +35,202 @@
 
 ############## grafana ##############
 {$GRAFANA_DOMAIN} {
+    import access-log
     request_body {
         max_size 2048MB
     }
-
-    reverse_proxy http://grafana:3000
+    route {
+        import security
+        reverse_proxy http://grafana:3000
+    }
 }
 
 ############## gitea ##############
 {$GITEA_DOMAIN} {
+    import access-log
     request_body {
         max_size 512MB
     }
-
-    reverse_proxy http://gitea:3000
+    route {
+        import security
+        reverse_proxy http://gitea:3000
+    }
 }
 
 ############## slash ##############
 {$SLASH_DOMAIN} {
+    import access-log
     request_body {
         max_size 10MB
     }
-
-    reverse_proxy http://slash:5231
+    route {
+        import security
+        reverse_proxy http://slash:5231
+    }
 }
 
 ############## memos ##############
 {$MEMOS_DOMAIN} {
+    import access-log
     request_body {
         max_size 1024MB
     }
-
-    reverse_proxy http://memos:5230
+    route {
+        import security
+        reverse_proxy http://memos:5230
+    }
 }
 
 ############## wg-easy ##############
 {$WG_EASY_DOMAIN} {
+    import access-log
     request_body {
         max_size 10MB
     }
-
-    reverse_proxy http://wg-easy:51821
+    route {
+        import security
+        reverse_proxy http://wg-easy:51821
+    }
 }
 
 ############## vaultwarden ##############
 {$VAULTWARDEN_DOMAIN} {
+    import access-log
     request_body {
         max_size 128MB
     }
-
-    reverse_proxy http://vaultwarden
+    route {
+        import security
+        reverse_proxy http://vaultwarden
+    }
 }
 
 ############## sftpgo ##############
 {$SFTPGO_DOMAIN} {
+    import access-log
     request_body {
         max_size 8120MB
     }
-
-    reverse_proxy http://sftpgo:8080
+    route {
+        import security
+        reverse_proxy http://sftpgo:8080
+    }
 }
 
 ############## glance ##############
 {$GLANCE_DOMAIN} {
+    import access-log
     request_body {
         max_size 64MB
     }
-
-    reverse_proxy http://glance:8080
+    route {
+        import security
+        reverse_proxy http://glance:8080
+    }
 }
 
 ############## ghost ##############
 {$GHOST_DOMAIN} {
+    import access-log
     request_body {
         max_size 124MB
     }
-
-    reverse_proxy http://ghost:2368 {
-        header_up X-Forwarded-Proto {http.request.scheme}
-        header_up Host {http.request.host}
+    route {
+        import security
+        reverse_proxy http://ghost:2368 {
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up Host {http.request.host}
+        }
     }
 }
 
 ############## immich ##############
 {$IMMICH_DOMAIN} {
+    import access-log
     request_body {
         max_size 1024MB
     }
-
-    reverse_proxy http://immich_server:2283 {
-        header_up X-Forwarded-Proto {http.request.scheme}
-        header_up Host {http.request.host}
+    route {
+        import security
+        reverse_proxy http://immich_server:2283 {
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up Host {http.request.host}
+        }
     }
 }
 
 ############## uptime-kuma ##############
 {$UPTIME_KUMA_DOMAIN} {
+    import access-log
     request_body {
         max_size 1024MB
     }
-
-    reverse_proxy http://uptime_kuma:3001 {
-        header_up X-Forwarded-Proto {http.request.scheme}
-        header_up Host {http.request.host}
+    route {
+        import security
+        reverse_proxy http://uptime_kuma:3001 {
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up Host {http.request.host}
+        }
     }
 }
 
 ############## stalwart ##############
 {$STALWART_DOMAIN}, {$STALWART_AUTOCONFIG_DOMAIN}, {$STALWART_AUTODISCOVER_DOMAIN} {
+    import access-log
     request_body {
         max_size 4048MB
     }
-
-    reverse_proxy http://stalwart:8080 {
-        header_up X-Forwarded-Proto {http.request.scheme}
-        header_up X-Forwarded-For {http.request.remote_host}
-        header_up Host {http.request.host}
+    route {
+        import security
+        reverse_proxy http://stalwart:8080 {
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up X-Forwarded-For {http.request.remote_host}
+            header_up Host {http.request.host}
+        }
     }
 }
 
 ############## textarea ##############
 {$TEXTAREA_DOMAIN} {
-    root * /volume/textarea
-    file_server {
-        browse off
+    import access-log
+    route {
+        import security
+        root * /volume/textarea
+        file_server {
+            browse off
+        }
     }
 }
 
 ############## gopkg-proxy ##############
 {$GOPKG_PROXY_DOMAIN} {
+    import access-log
     request_body {
         max_size 2MB
     }
-
-    reverse_proxy http://gopkg_proxy:8421
+    route {
+        import security
+        reverse_proxy http://gopkg_proxy:8421
+    }
 }
 
 ############## ech0 ##############
 {$ECH0_DOMAIN} {
+    import access-log
     header -Server
-
     request_body {
         max_size 5MB
     }
+    route {
+        import security
+        reverse_proxy http://ech0:8421 {
+            header_up -X-Forwarded-Host
+            header_up -X-Forwarded-Proto
+            header_up -Via
 
-    reverse_proxy http://ech0:8421 {
-        # wheader_up -X-Forwarded-For
-        header_up -X-Forwarded-Host
-        header_up -X-Forwarded-Proto
-        header_up -Via
-
-        transport http {
-            compression off
+            transport http {
+                compression off
+            }
         }
     }
 }

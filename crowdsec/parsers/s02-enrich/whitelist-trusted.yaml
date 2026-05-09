@@ -1,0 +1,11 @@
+name: aykhans/whitelist-trusted
+description: Trusted operator IPs and Docker private network ranges
+whitelist:
+  reason: "operator + internal docker networks"
+  ip:
+    - "127.0.0.1"
+    - "::1"
+  cidr:
+    - "10.0.0.0/8"
+    - "172.16.0.0/12"
+    - "192.168.0.0/16"

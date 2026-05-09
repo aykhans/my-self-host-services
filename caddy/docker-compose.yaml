@@ -6,11 +6,9 @@ networks:
 
 services:
   caddy:
-    image: caddy:2-alpine
+    build: .
     container_name: caddy
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - caddy
     ports:

@@ -1,0 +1,17 @@
+type: leaky
+name: stalwart/smtp-bruteforce
+description: Detect SMTP bruteforce and scanners on Stalwart logs
+filter: |
+  evt.Parsed.event_type in [
+    "smtp.invalid-ehlo",
+    "smtp.auth-not-allowed",
+    "smtp.auth-mechanism-not-supported"
+  ]
+groupby: evt.Meta.source_ip
+capacity: 5
+leakspeed: 10m
+blackhole: 1h
+labels:
+  type: attack
+  service: smtp
+  remediation: true

@@ -1,0 +1,51 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest-debian
+    container_name: crowdsec
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      TZ: "Etc/UTC"
+      COLLECTIONS: >-
+        crowdsecurity/linux
+        crowdsecurity/caddy
+        crowdsecurity/http-cve
+        crowdsecurity/sshd
+        crowdsecurity/whitelist-good-actors
+        crowdsecurity/appsec-virtual-patching
+        crowdsecurity/appsec-generic-rules
+        LePresidente/gitea
+        Dominic-Wagner/vaultwarden
+      BOUNCER_KEY_caddy: "${CROWDSEC_BOUNCER_KEY_CADDY}"
+      BOUNCER_KEY_firewall: "${CROWDSEC_BOUNCER_KEY_FW}"
+      ENROLL_KEY: "${CROWDSEC_ENROLL_KEY:-}"
+      ENROLL_INSTANCE_NAME: "${CROWDSEC_ENROLL_INSTANCE_NAME:-aykhans-prod}"
+    ports:
+      - "127.0.0.1:18080:8080"
+    networks:
+      - caddy
+    volumes:
+      - ./data/db:/var/lib/crowdsec/data
+      - ./data/config:/etc/crowdsec
+      - ./acquis.d:/etc/crowdsec/acquis.d:ro
+      - ./parsers/s00-raw/stalwart-logs.yaml:/etc/crowdsec/parsers/s00-raw/stalwart-logs.yaml:ro
+      - ./parsers/s01-parse/stalwart-logs-extended.yaml:/etc/crowdsec/parsers/s01-parse/stalwart-logs-extended.yaml:ro
+      - ./parsers/s02-enrich/whitelist-trusted.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-trusted.yaml:ro
+      - ./scenarios/stalwart-smtp-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-smtp-bruteforce.yaml:ro
+      - ./scenarios/stalwart-auth-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-auth-bruteforce.yaml:ro
+      - /var/log/journal:/var/log/journal:ro
+      - /run/log/journal:/run/log/journal:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

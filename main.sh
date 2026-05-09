@@ -64,6 +64,7 @@ generate_env_files() {
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env
     cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./stalwart/.env.example ./stalwart/.env
+    cp --update=none ./crowdsec/.env.example ./crowdsec/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     print_success ".env files generated."
 }
@@ -190,8 +191,17 @@ start_services() {
         exit 1
     fi
 
+    echo "Starting crowdsec..."
+    $DOCKER_COMPOSE_COMMAND -f ./crowdsec/docker-compose.yaml up --pull always -d
+    if [ $? -eq 0 ]; then
+        print_success "Crowdsec started successfully."
+    else
+        print_error "failed to start Crowdsec!"
+        exit 1
+    fi
+
     echo "Starting caddy..."
-    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yaml up --pull always -d
+    $DOCKER_COMPOSE_COMMAND -f ./caddy/docker-compose.yaml up --pull always --build -d
     if [ $? -eq 0 ]; then
         print_success "Caddy started successfully."
     else
@@ -365,6 +375,15 @@ stop_services() {
         print_success "Caddy stopped successfully."
     else
         print_error "failed to stop Caddy!"
+        exit 1
+    fi
+
+    echo "Stopping crowdsec..."
+    $DOCKER_COMPOSE_COMMAND -f ./crowdsec/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Crowdsec stopped successfully."
+    else
+        print_error "failed to stop Crowdsec!"
         exit 1
     fi
 
