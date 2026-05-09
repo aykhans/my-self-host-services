@@ -9,6 +9,8 @@
         api_key        {env.CROWDSEC_API_KEY}
         ticker_interval 15s
         appsec_url     http://crowdsec:7422
+        appsec_fail_open
+        appsec_timeout 1s
     }
 
     servers {
