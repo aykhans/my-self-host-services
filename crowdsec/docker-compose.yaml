@@ -41,6 +41,7 @@ services:
       - ./parsers/s02-enrich/whitelist-trusted.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-trusted.yaml:ro
       - ./scenarios/stalwart-smtp-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-smtp-bruteforce.yaml:ro
       - ./scenarios/stalwart-auth-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-auth-bruteforce.yaml:ro
+      - ./scenarios/http-admin-interface-probing.yaml:/etc/crowdsec/scenarios/http-admin-interface-probing.yaml:ro
       - /var/log/journal:/var/log/journal:ro
       - /run/log/journal:/run/log/journal:ro
       - /etc/machine-id:/etc/machine-id:ro
