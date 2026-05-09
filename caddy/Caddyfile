@@ -43,7 +43,9 @@
     }
     route {
         import security
-        reverse_proxy http://grafana:3000
+        reverse_proxy http://grafana:3000 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -55,7 +57,9 @@
     }
     route {
         import security
-        reverse_proxy http://gitea:3000
+        reverse_proxy http://gitea:3000 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -67,7 +71,9 @@
     }
     route {
         import security
-        reverse_proxy http://slash:5231
+        reverse_proxy http://slash:5231 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -79,7 +85,9 @@
     }
     route {
         import security
-        reverse_proxy http://memos:5230
+        reverse_proxy http://memos:5230 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -91,7 +99,9 @@
     }
     route {
         import security
-        reverse_proxy http://wg-easy:51821
+        reverse_proxy http://wg-easy:51821 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -103,7 +113,9 @@
     }
     route {
         import security
-        reverse_proxy http://vaultwarden
+        reverse_proxy http://vaultwarden {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -115,7 +127,9 @@
     }
     route {
         import security
-        reverse_proxy http://sftpgo:8080
+        reverse_proxy http://sftpgo:8080 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -127,7 +141,9 @@
     }
     route {
         import security
-        reverse_proxy http://glance:8080
+        reverse_proxy http://glance:8080 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
@@ -140,7 +156,6 @@
     route {
         import security
         reverse_proxy http://ghost:2368 {
-            header_up X-Forwarded-Proto {http.request.scheme}
             header_up Host {http.request.host}
         }
     }
@@ -155,7 +170,6 @@
     route {
         import security
         reverse_proxy http://immich_server:2283 {
-            header_up X-Forwarded-Proto {http.request.scheme}
             header_up Host {http.request.host}
         }
     }
@@ -170,7 +184,6 @@
     route {
         import security
         reverse_proxy http://uptime_kuma:3001 {
-            header_up X-Forwarded-Proto {http.request.scheme}
             header_up Host {http.request.host}
         }
     }
@@ -185,8 +198,6 @@
     route {
         import security
         reverse_proxy http://stalwart:8080 {
-            header_up X-Forwarded-Proto {http.request.scheme}
-            header_up X-Forwarded-For {http.request.remote_host}
             header_up Host {http.request.host}
         }
     }
@@ -212,7 +223,9 @@
     }
     route {
         import security
-        reverse_proxy http://gopkg_proxy:8421
+        reverse_proxy http://gopkg_proxy:8421 {
+            header_up Host {http.request.host}
+        }
     }
 }
 
