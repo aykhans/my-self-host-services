@@ -12,6 +12,7 @@ services:
     environment:
       - DOMAIN=${DOMAIN}
       - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - LOG_TIMESTAMP_FORMAT=%Y-%m-%d %H:%M:%S.%3f%:z
     networks:
       - caddy
     volumes:

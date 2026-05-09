@@ -13,6 +13,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
     environment:
       TZ: "Etc/UTC"
+      USE_WAL: "true"
       COLLECTIONS: >-
         crowdsecurity/linux
         crowdsecurity/caddy
