@@ -1,43 +1,50 @@
 ## Prerequisites
+
 - **Bash**
 - **Docker**
 - **Docker compose**
 - **Ports:**
-  - **Caddy**
-    - 80/tcp (HTTP)
-    - 443/tcp (HTTPS)
-  - **Stalwart**
-    - 25/tcp (SMTP)
-    - 110/tcp (POP3)
-    - 995/tcp (POP3S)
-    - 143/tcp (IMAP)
-    - 993/tcp (IMAPS)
-    - 465/tcp (SMTPS)
-    - 587/tcp (SUBMISSION)
-    - 4190/tcp (ManageSieve)
-  - **Croc**
-    - 9009-9013/tcp (relay)
-  - **SFTPGo**
-    - 2022/tcp (SFTP)
-  - **WireGuard Easy**
-    - 51820/udp (WireGuard)
+    - **Caddy**
+        - 80/tcp (HTTP)
+        - 443/tcp (HTTPS)
+    - **Stalwart**
+        - 25/tcp (SMTP)
+        - 110/tcp (POP3)
+        - 995/tcp (POP3S)
+        - 143/tcp (IMAP)
+        - 993/tcp (IMAPS)
+        - 465/tcp (SMTPS)
+        - 587/tcp (SUBMISSION)
+        - 4190/tcp (ManageSieve)
+    - **Croc**
+        - 9009-9013/tcp (relay)
+    - **SFTPGo**
+        - 2022/tcp (SFTP)
+    - **WireGuard Easy**
+        - 51820/udp (WireGuard)
 
 ## Getting Started
 
 Follow these steps to set up and start the services:
+
 ### 1. Grant Execute Permissions
+
 Ensure the `main.sh` script has the necessary permissions:
+
 ```sh
 chmod +x main.sh
 ```
 
 ### 2. Generate Environment Files
+
 Create `.env` configuration files with the following command:
+
 ```sh
 ./main.sh generate-env
 ```
 
 ### 3. Configure Environment Variables
+
 Edit the generated `.env` files to fill in the required fields:
 
 - `./gitea/.env`
@@ -54,7 +61,9 @@ Edit the generated `.env` files to fill in the required fields:
 - `./caddy/Caddyfile.private`
 
 ### 4. Bouncer Keys (CrowdSec)
+
 Generate two keys and write them into the matching `.env` files:
+
 ```sh
 CADDY_KEY=$(openssl rand -hex 32)
 FW_KEY=$(openssl rand -hex 32)
@@ -70,46 +79,45 @@ sed -i "s|^CROWDSEC_API_KEY=.*|CROWDSEC_API_KEY=$CADDY_KEY|" ./caddy/.env
 (Optional) get a Console enroll key from https://app.crowdsec.net and put it in `CROWDSEC_ENROLL_KEY`.
 
 ### 5. Start Services
+
 Launch all services with the following command:
+
 ```sh
 ./main.sh start
 ```
 
 ### 6. Host Firewall Bouncer (CrowdSec, nftables)
-The Caddy bouncer protects HTTP services. Stalwart's mail ports (25/465/587/143/993/110/995/4190) bypass Caddy, so install a firewall bouncer on the host:
+
+The Caddy bouncer protects HTTP services. Stalwart's mail ports (25/465/587/143/993/110/995/4190) bypass Caddy, so install a firewall bouncer on the host. CrowdSec packages live on PackageCloud, not in the default apt repos, so add the repo first:
+
 ```sh
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
 sudo apt install crowdsec-firewall-bouncer-nftables
 ```
 
-Edit `/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml`:
-```yaml
-mode: nftables
-api_url: http://127.0.0.1:18080/
-api_key: <value of CROWDSEC_BOUNCER_KEY_FW from crowdsec/.env>
-update_frequency: 10s
-```
+Do NOT use `install.crowdsec.net` (that installs the engine too, which we already run in Docker).
 
-Enable and start:
+Patch the default config (the package writes `api_url: http://127.0.0.1:8080/` but our LAPI is on 18080):
+
 ```sh
+FW_KEY=$(grep '^CROWDSEC_BOUNCER_KEY_FW=' ./crowdsec/.env | cut -d= -f2)
+sudo sed -i "s|^api_url:.*|api_url: http://127.0.0.1:18080/|" /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
+sudo sed -i "s|^api_key:.*|api_key: $FW_KEY|" /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
 sudo systemctl enable --now crowdsec-firewall-bouncer
+sudo systemctl status crowdsec-firewall-bouncer --no-pager
 ```
 
 Verify:
-```sh
-docker exec crowdsec cscli bouncers list      # should show 'caddy' and 'firewall'
-docker exec crowdsec cscli decisions list     # current bans
-sudo nft list ruleset | grep -A2 crowdsec     # kernel-level rules in place
-```
 
-Allowlist your operator IP at any time:
 ```sh
-docker exec crowdsec cscli allowlist create operator -d "Operator IPs"
-docker exec crowdsec cscli allowlist add operator <your-public-ip>
+docker exec crowdsec cscli bouncers list      # 'firewall' should appear with a non-empty IP and recent 'Last API pull'
+sudo nft list ruleset | grep crowdsec         # kernel-level rules in place
 ```
 
 ## Stopping Services
 
 To stop all running services, use:
+
 ```sh
 ./main.sh stop
 ```
