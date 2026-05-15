@@ -53,7 +53,7 @@
       },
       "targets": [
         {
-          "expr": "sum(cs_active_decisions)",
+          "expr": "crowdsec_decisions_unique_ips_total",
           "refId": "A",
           "instant": true,
           "datasource": {
@@ -118,7 +118,7 @@
       },
       "targets": [
         {
-          "expr": "sum(cs_active_decisions{origin=\"CAPI\"})",
+          "expr": "crowdsec_decisions_unique_ips{origin=\"CAPI\"}",
           "refId": "A",
           "instant": true,
           "datasource": {
@@ -166,7 +166,7 @@
       },
       "targets": [
         {
-          "expr": "sum(cs_active_decisions{origin=\"lists\"})",
+          "expr": "crowdsec_decisions_unique_ips{origin=\"lists\"}",
           "refId": "A",
           "instant": true,
           "datasource": {
@@ -214,7 +214,7 @@
       },
       "targets": [
         {
-          "expr": "sum(cs_active_decisions{origin=\"crowdsec\"})",
+          "expr": "crowdsec_decisions_unique_ips{origin=\"crowdsec\"}",
           "refId": "A",
           "instant": true,
           "datasource": {
@@ -371,7 +371,7 @@
       },
       "targets": [
         {
-          "expr": "sum by (origin) (cs_active_decisions)",
+          "expr": "sum by (origin) (crowdsec_decisions_unique_ips)",
           "legendFormat": "{{origin}}",
           "refId": "A",
           "instant": true,
@@ -425,8 +425,8 @@
       },
       "targets": [
         {
-          "expr": "topk(10, sum by (reason) (cs_active_decisions))",
-          "legendFormat": "{{reason}}",
+          "expr": "topk(10, sum by (scenario) (crowdsec_decisions_active))",
+          "legendFormat": "{{scenario}}",
           "refId": "A",
           "instant": true,
           "datasource": {
@@ -479,7 +479,7 @@
       },
       "targets": [
         {
-          "expr": "sum by (origin) (cs_active_decisions)",
+          "expr": "sum by (origin) (crowdsec_decisions_unique_ips)",
           "legendFormat": "{{origin}}",
           "refId": "A",
           "datasource": {

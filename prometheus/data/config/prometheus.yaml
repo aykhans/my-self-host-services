@@ -21,3 +21,8 @@ scrape_configs:
       scrape_interval: 10s
       static_configs:
           - targets: ["crowdsec:6060"]
+
+    - job_name: crowdsec_exporter
+      scrape_interval: 30s
+      static_configs:
+          - targets: ["crowdsec_exporter:9100"]

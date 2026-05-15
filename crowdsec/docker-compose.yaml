@@ -51,3 +51,22 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
+
+  exporter:
+    build: ./exporter
+    container_name: crowdsec_exporter
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      CROWDSEC_LAPI_URL: "http://crowdsec:8080"
+      CROWDSEC_API_KEY: "${CROWDSEC_BOUNCER_KEY_CADDY}"
+      POLL_INTERVAL_SECS: "30"
+      LISTEN_PORT: "9100"
+    depends_on:
+      - crowdsec
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
