@@ -6,8 +6,8 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "uid": "crowdsec-native",
-  "title": "CrowdSec (native metrics)",
+  "uid": "crowdsec",
+  "title": "CrowdSec",
   "tags": [
     "crowdsec",
     "security"
