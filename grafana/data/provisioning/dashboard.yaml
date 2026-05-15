@@ -14,9 +14,9 @@ providers:
     disableDeletion: false
     # Optional: Allow users to edit dashboards in the Grafana UI.
     # Changes will be overwritten on restart unless you save them elsewhere.
-    editable: true
+    editable: false
     updateIntervalSeconds: 10
-    allowUiUpdates: true
+    allowUiUpdates: false
     # Options specific to the 'file' type provider
     options:
       # Path inside the container where Grafana should look for dashboard JSON files.
