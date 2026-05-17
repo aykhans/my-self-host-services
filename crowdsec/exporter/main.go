@@ -16,21 +16,6 @@ import (
 
 var geoDB *geoip2.Reader
 
-func lookupCountry(ip string) string {
-	if geoDB == nil {
-		return ""
-	}
-	addr, err := netip.ParseAddr(ip)
-	if err != nil {
-		return ""
-	}
-	rec, err := geoDB.City(addr)
-	if err != nil || rec == nil {
-		return ""
-	}
-	return rec.Country.ISOCode
-}
-
 // countryFlag converts a 2-letter ISO-3166-1 alpha-2 country code into its
 // emoji flag using the Unicode regional indicator pairs trick (A-Z -> 0x1F1E6-FF).
 func countryFlag(iso string) string {
@@ -42,6 +27,36 @@ func countryFlag(iso string) string {
 		return ""
 	}
 	return string([]rune{rune(a-'A') + 0x1F1E6, rune(b-'A') + 0x1F1E6})
+}
+
+// lookupGeo returns "<flag> <country name> (<city>)" for the given IP, falling
+// back gracefully (empty string, missing flag, missing city) when the DB is
+// unavailable or the IP can't be resolved.
+func lookupGeo(ip string) string {
+	if geoDB == nil {
+		return ""
+	}
+	addr, err := netip.ParseAddr(ip)
+	if err != nil {
+		return ""
+	}
+	rec, err := geoDB.City(addr)
+	if err != nil || rec == nil {
+		return ""
+	}
+	iso := rec.Country.ISOCode
+	name := rec.Country.Names.English
+	if name == "" {
+		name = iso
+	}
+	out := name
+	if flag := countryFlag(iso); flag != "" {
+		out = flag + " " + name
+	}
+	if city := rec.City.Names.English; city != "" {
+		out += " (" + city + ")"
+	}
+	return out
 }
 
 var (
@@ -63,7 +78,7 @@ var (
 	decisionRemaining = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "crowdsec_decision_remaining_seconds",
 		Help: "Remaining seconds before each local decision expires. Only origin=crowdsec is exposed to keep cardinality bounded (CAPI/lists can contain tens of thousands of IPs).",
-	}, []string{"origin", "ip", "country", "flag", "scenario", "type"})
+	}, []string{"origin", "ip", "country", "scenario", "type"})
 
 	lastFetchUnix = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "crowdsec_exporter_last_fetch_unix",
@@ -138,8 +153,8 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	ips := map[string]map[string]struct{}{}
 	allIPs := map[string]struct{}{}
 	type localDecision struct {
-		origin, ip, country, flag, scenario, dtype string
-		remaining                                  float64
+		origin, ip, country, scenario, dtype string
+		remaining                            float64
 	}
 	var locals []localDecision
 
@@ -169,8 +184,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 			if perr != nil {
 				dur = 0
 			}
-			c := lookupCountry(d.Value)
-			locals = append(locals, localDecision{origin, d.Value, c, countryFlag(c), scenario, dtype, dur.Seconds()})
+			locals = append(locals, localDecision{origin, d.Value, lookupGeo(d.Value), scenario, dtype, dur.Seconds()})
 		}
 	}
 
@@ -185,7 +199,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	}
 	decisionsUniqueIPsTotal.Set(float64(len(allIPs)))
 	for _, l := range locals {
-		decisionRemaining.WithLabelValues(l.origin, l.ip, l.country, l.flag, l.scenario, l.dtype).Set(l.remaining)
+		decisionRemaining.WithLabelValues(l.origin, l.ip, l.country, l.scenario, l.dtype).Set(l.remaining)
 	}
 
 	fetchErrors.Set(0)
