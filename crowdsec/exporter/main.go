@@ -31,6 +31,19 @@ func lookupCountry(ip string) string {
 	return rec.Country.ISOCode
 }
 
+// countryFlag converts a 2-letter ISO-3166-1 alpha-2 country code into its
+// emoji flag using the Unicode regional indicator pairs trick (A-Z -> 0x1F1E6-FF).
+func countryFlag(iso string) string {
+	if len(iso) != 2 {
+		return ""
+	}
+	a, b := iso[0], iso[1]
+	if a < 'A' || a > 'Z' || b < 'A' || b > 'Z' {
+		return ""
+	}
+	return string([]rune{rune(a-'A') + 0x1F1E6, rune(b-'A') + 0x1F1E6})
+}
+
 var (
 	decisionsActive = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "crowdsec_decisions_active",
@@ -50,7 +63,7 @@ var (
 	decisionRemaining = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "crowdsec_decision_remaining_seconds",
 		Help: "Remaining seconds before each local decision expires. Only origin=crowdsec is exposed to keep cardinality bounded (CAPI/lists can contain tens of thousands of IPs).",
-	}, []string{"origin", "ip", "country", "scenario", "type"})
+	}, []string{"origin", "ip", "country", "flag", "scenario", "type"})
 
 	lastFetchUnix = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "crowdsec_exporter_last_fetch_unix",
@@ -125,8 +138,8 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	ips := map[string]map[string]struct{}{}
 	allIPs := map[string]struct{}{}
 	type localDecision struct {
-		origin, ip, country, scenario, dtype string
-		remaining                            float64
+		origin, ip, country, flag, scenario, dtype string
+		remaining                                  float64
 	}
 	var locals []localDecision
 
@@ -156,7 +169,8 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 			if perr != nil {
 				dur = 0
 			}
-			locals = append(locals, localDecision{origin, d.Value, lookupCountry(d.Value), scenario, dtype, dur.Seconds()})
+			c := lookupCountry(d.Value)
+			locals = append(locals, localDecision{origin, d.Value, c, countryFlag(c), scenario, dtype, dur.Seconds()})
 		}
 	}
 
@@ -171,7 +185,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	}
 	decisionsUniqueIPsTotal.Set(float64(len(allIPs)))
 	for _, l := range locals {
-		decisionRemaining.WithLabelValues(l.origin, l.ip, l.country, l.scenario, l.dtype).Set(l.remaining)
+		decisionRemaining.WithLabelValues(l.origin, l.ip, l.country, l.flag, l.scenario, l.dtype).Set(l.remaining)
 	}
 
 	fetchErrors.Set(0)

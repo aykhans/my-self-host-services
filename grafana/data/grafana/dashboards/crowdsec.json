@@ -428,13 +428,15 @@
               "origin": true
             },
             "indexByName": {
-              "ip": 0,
-              "country": 1,
-              "scenario": 2,
-              "type": 3,
-              "Value": 4
+              "flag": 0,
+              "ip": 1,
+              "country": 2,
+              "scenario": 3,
+              "type": 4,
+              "Value": 5
             },
             "renameByName": {
+              "flag": "Flag",
               "ip": "IP",
               "country": "Country",
               "scenario": "Scenario",
