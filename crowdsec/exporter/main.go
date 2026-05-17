@@ -71,7 +71,12 @@ func getenv(k, def string) string {
 }
 
 func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
-	req, _ := http.NewRequest("GET", lapiURL+"/v1/decisions", nil)
+	req, err := http.NewRequest("GET", lapiURL+"/v1/decisions", nil)
+	if err != nil {
+		log.Printf("[error] build request failed: %v", err)
+		fetchErrors.Set(1)
+		return
+	}
 	req.Header.Set("X-Api-Key", apiKey)
 	req.Header.Set("User-Agent", "crowdsec-exporter/1.0")
 
@@ -100,6 +105,11 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	counts := map[key]int{}
 	ips := map[string]map[string]struct{}{}
 	allIPs := map[string]struct{}{}
+	type localDecision struct {
+		origin, ip, scenario, dtype string
+		remaining                   float64
+	}
+	var locals []localDecision
 
 	for _, d := range data {
 		origin := d.Origin
@@ -122,6 +132,13 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 			ips[origin][d.Value] = struct{}{}
 			allIPs[d.Value] = struct{}{}
 		}
+		if origin == "crowdsec" {
+			dur, perr := time.ParseDuration(d.Duration)
+			if perr != nil {
+				dur = 0
+			}
+			locals = append(locals, localDecision{origin, d.Value, scenario, dtype, dur.Seconds()})
+		}
 	}
 
 	decisionsActive.Reset()
@@ -134,16 +151,8 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 		decisionsUniqueIPs.WithLabelValues(origin).Set(float64(len(s)))
 	}
 	decisionsUniqueIPsTotal.Set(float64(len(allIPs)))
-
-	for _, d := range data {
-		if d.Origin != "crowdsec" {
-			continue
-		}
-		dur, err := time.ParseDuration(d.Duration)
-		if err != nil {
-			dur = 0
-		}
-		decisionRemaining.WithLabelValues(d.Origin, d.Value, d.Scenario, d.Type).Set(dur.Seconds())
+	for _, l := range locals {
+		decisionRemaining.WithLabelValues(l.origin, l.ip, l.scenario, l.dtype).Set(l.remaining)
 	}
 
 	fetchErrors.Set(0)
