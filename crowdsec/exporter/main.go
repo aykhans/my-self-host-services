@@ -4,13 +4,32 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"net/netip"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/oschwald/geoip2-golang/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
+
+var geoDB *geoip2.Reader
+
+func lookupCountry(ip string) string {
+	if geoDB == nil {
+		return ""
+	}
+	addr, err := netip.ParseAddr(ip)
+	if err != nil {
+		return ""
+	}
+	rec, err := geoDB.City(addr)
+	if err != nil || rec == nil {
+		return ""
+	}
+	return rec.Country.ISOCode
+}
 
 var (
 	decisionsActive = prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -31,7 +50,7 @@ var (
 	decisionRemaining = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "crowdsec_decision_remaining_seconds",
 		Help: "Remaining seconds before each local decision expires. Only origin=crowdsec is exposed to keep cardinality bounded (CAPI/lists can contain tens of thousands of IPs).",
-	}, []string{"origin", "ip", "scenario", "type"})
+	}, []string{"origin", "ip", "country", "scenario", "type"})
 
 	lastFetchUnix = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "crowdsec_exporter_last_fetch_unix",
@@ -106,8 +125,8 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	ips := map[string]map[string]struct{}{}
 	allIPs := map[string]struct{}{}
 	type localDecision struct {
-		origin, ip, scenario, dtype string
-		remaining                   float64
+		origin, ip, country, scenario, dtype string
+		remaining                            float64
 	}
 	var locals []localDecision
 
@@ -137,7 +156,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 			if perr != nil {
 				dur = 0
 			}
-			locals = append(locals, localDecision{origin, d.Value, scenario, dtype, dur.Seconds()})
+			locals = append(locals, localDecision{origin, d.Value, lookupCountry(d.Value), scenario, dtype, dur.Seconds()})
 		}
 	}
 
@@ -152,7 +171,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 	}
 	decisionsUniqueIPsTotal.Set(float64(len(allIPs)))
 	for _, l := range locals {
-		decisionRemaining.WithLabelValues(l.origin, l.ip, l.scenario, l.dtype).Set(l.remaining)
+		decisionRemaining.WithLabelValues(l.origin, l.ip, l.country, l.scenario, l.dtype).Set(l.remaining)
 	}
 
 	fetchErrors.Set(0)
@@ -174,6 +193,17 @@ func main() {
 		log.Fatalf("invalid POLL_INTERVAL_SECS: %q", intervalStr)
 	}
 	port := getenv("LISTEN_PORT", "9100")
+
+	geoDBPath := getenv("GEOIP_CITY_DB", "")
+	if geoDBPath != "" {
+		if db, err := geoip2.Open(geoDBPath); err == nil {
+			geoDB = db
+			defer geoDB.Close()
+			log.Printf("[start] GeoIP DB loaded: %s", geoDBPath)
+		} else {
+			log.Printf("[warn] GeoIP DB unavailable (%v); country label will be empty", err)
+		}
+	}
 
 	client := &http.Client{Timeout: 10 * time.Second}
 

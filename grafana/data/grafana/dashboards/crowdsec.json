@@ -429,12 +429,14 @@
             },
             "indexByName": {
               "ip": 0,
-              "scenario": 1,
-              "type": 2,
-              "Value": 3
+              "country": 1,
+              "scenario": 2,
+              "type": 3,
+              "Value": 4
             },
             "renameByName": {
               "ip": "IP",
+              "country": "Country",
               "scenario": "Scenario",
               "type": "Type",
               "Value": "Time remaining"
