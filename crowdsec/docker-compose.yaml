@@ -26,6 +26,7 @@ services:
         Dominic-Wagner/vaultwarden
       BOUNCER_KEY_caddy: "${CROWDSEC_BOUNCER_KEY_CADDY}"
       BOUNCER_KEY_firewall: "${CROWDSEC_BOUNCER_KEY_FW}"
+      BOUNCER_KEY_exporter: "${CROWDSEC_BOUNCER_KEY_EXPORTER}"
       ENROLL_KEY: "${CROWDSEC_ENROLL_KEY:-}"
       ENROLL_INSTANCE_NAME: "${CROWDSEC_ENROLL_INSTANCE_NAME:-aykhans-prod}"
     ports:
@@ -61,7 +62,7 @@ services:
       - caddy
     environment:
       CROWDSEC_LAPI_URL: "http://crowdsec:8080"
-      CROWDSEC_API_KEY: "${CROWDSEC_BOUNCER_KEY_CADDY}"
+      CROWDSEC_API_KEY: "${CROWDSEC_BOUNCER_KEY_EXPORTER}"
       POLL_INTERVAL_SECS: "30"
       LISTEN_PORT: "9100"
       GEOIP_CITY_DB: "/geoip/GeoLite2-City.mmdb"
