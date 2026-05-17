@@ -25,19 +25,6 @@
   },
   "panels": [
     {
-      "id": 1,
-      "type": "row",
-      "title": "Overview",
-      "collapsed": false,
-      "gridPos": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 1
-      },
-      "panels": []
-    },
-    {
       "id": 2,
       "type": "stat",
       "title": "Total active bans",
@@ -47,7 +34,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 1,
+        "y": 0,
         "w": 6,
         "h": 4
       },
@@ -112,7 +99,7 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 1,
+        "y": 0,
         "w": 6,
         "h": 4
       },
@@ -160,7 +147,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 1,
+        "y": 0,
         "w": 6,
         "h": 4
       },
@@ -208,7 +195,7 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 1,
+        "y": 0,
         "w": 6,
         "h": 4
       },
@@ -247,19 +234,6 @@
       }
     },
     {
-      "id": 8,
-      "type": "row",
-      "title": "Active bans breakdown",
-      "collapsed": false,
-      "gridPos": {
-        "x": 0,
-        "y": 5,
-        "w": 24,
-        "h": 1
-      },
-      "panels": []
-    },
-    {
       "id": 9,
       "type": "piechart",
       "title": "Bans by origin",
@@ -269,7 +243,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 6,
+        "y": 4,
         "w": 12,
         "h": 9
       },
@@ -323,7 +297,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 6,
+        "y": 4,
         "w": 12,
         "h": 9
       },
@@ -368,19 +342,6 @@
       }
     },
     {
-      "id": 12,
-      "type": "row",
-      "title": "Local detection activity (your engine)",
-      "collapsed": false,
-      "gridPos": {
-        "x": 0,
-        "y": 15,
-        "w": 24,
-        "h": 1
-      },
-      "panels": []
-    },
-    {
       "id": 14,
       "type": "bargauge",
       "title": "Top scenarios by alerts (total)",
@@ -390,7 +351,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 16,
+        "y": 23,
         "w": 24,
         "h": 8
       },
@@ -439,7 +400,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 24,
+        "y": 13,
         "w": 24,
         "h": 10
       },
