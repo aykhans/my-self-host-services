@@ -1,7 +1,7 @@
 name: default_ip_remediation
 filters:
   - Alert.Remediation == true && Alert.GetScope() == "Ip"
-duration_expr: Sprintf('%dh', min(168, (GetDecisionsCount(Alert.GetValue())+1)*4))
+duration_expr: Sprintf('%dh', min(730, (GetDecisionsCount(Alert.GetValue())+1)*4))
 decisions:
   - type: ban
     duration: 4h
@@ -11,7 +11,7 @@ on_success: break
 name: default_range_remediation
 filters:
   - Alert.Remediation == true && Alert.GetScope() == "Range"
-duration_expr: Sprintf('%dh', min(168, (GetDecisionsCount(Alert.GetValue())+1)*4))
+duration_expr: Sprintf('%dh', min(730, (GetDecisionsCount(Alert.GetValue())+1)*4))
 decisions:
   - type: ban
     duration: 4h
