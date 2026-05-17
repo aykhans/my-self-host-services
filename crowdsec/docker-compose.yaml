@@ -36,6 +36,7 @@ services:
       - ./data/db:/var/lib/crowdsec/data
       - ./data/config:/etc/crowdsec
       - ./acquis.d:/etc/crowdsec/acquis.d:ro
+      - ./profiles/profiles.yaml:/etc/crowdsec/profiles.yaml:ro
       - ./parsers/s00-raw/stalwart-logs.yaml:/etc/crowdsec/parsers/s00-raw/stalwart-logs.yaml:ro
       - ./parsers/s01-parse/stalwart-logs-extended.yaml:/etc/crowdsec/parsers/s01-parse/stalwart-logs-extended.yaml:ro
       - ./parsers/s02-enrich/whitelist-trusted.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-trusted.yaml:ro
