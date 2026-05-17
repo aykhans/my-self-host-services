@@ -28,6 +28,11 @@ var (
 		Help: "Unique IPs with at least one active decision across all origins.",
 	})
 
+	decisionRemaining = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "crowdsec_decision_remaining_seconds",
+		Help: "Remaining seconds before each local decision expires. Only origin=crowdsec is exposed to keep cardinality bounded (CAPI/lists can contain tens of thousands of IPs).",
+	}, []string{"origin", "ip", "scenario", "type"})
+
 	lastFetchUnix = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "crowdsec_exporter_last_fetch_unix",
 		Help: "Unix timestamp of the last successful LAPI fetch.",
@@ -44,6 +49,7 @@ type decision struct {
 	Scenario string `json:"scenario"`
 	Type     string `json:"type"`
 	Value    string `json:"value"`
+	Duration string `json:"duration"`
 }
 
 func init() {
@@ -51,6 +57,7 @@ func init() {
 		decisionsActive,
 		decisionsUniqueIPs,
 		decisionsUniqueIPsTotal,
+		decisionRemaining,
 		lastFetchUnix,
 		fetchErrors,
 	)
@@ -119,6 +126,7 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 
 	decisionsActive.Reset()
 	decisionsUniqueIPs.Reset()
+	decisionRemaining.Reset()
 	for k, n := range counts {
 		decisionsActive.WithLabelValues(k.origin, k.scenario, k.dtype).Set(float64(n))
 	}
@@ -126,6 +134,17 @@ func fetchAndUpdate(client *http.Client, lapiURL, apiKey string) {
 		decisionsUniqueIPs.WithLabelValues(origin).Set(float64(len(s)))
 	}
 	decisionsUniqueIPsTotal.Set(float64(len(allIPs)))
+
+	for _, d := range data {
+		if d.Origin != "crowdsec" {
+			continue
+		}
+		dur, err := time.ParseDuration(d.Duration)
+		if err != nil {
+			dur = 0
+		}
+		decisionRemaining.WithLabelValues(d.Origin, d.Value, d.Scenario, d.Type).Set(dur.Seconds())
+	}
 
 	fetchErrors.Set(0)
 	lastFetchUnix.Set(float64(time.Now().Unix()))

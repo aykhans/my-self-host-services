@@ -428,6 +428,106 @@
           "values": false
         }
       }
+    },
+    {
+      "id": 15,
+      "type": "table",
+      "title": "Local bans detail",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheusdatasource"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 24,
+        "h": 10
+      },
+      "targets": [
+        {
+          "expr": "crowdsec_decision_remaining_seconds{origin=\"crowdsec\"}",
+          "refId": "A",
+          "instant": true,
+          "format": "table",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheusdatasource"
+          }
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "origin": true
+            },
+            "indexByName": {
+              "ip": 0,
+              "scenario": 1,
+              "type": 2,
+              "Value": 3
+            },
+            "renameByName": {
+              "ip": "IP",
+              "scenario": "Scenario",
+              "type": "Type",
+              "Value": "Time remaining"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "filterable": true,
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time remaining"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-GrYlRd"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "Time remaining",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": false
+        }
+      }
     }
   ]
 }
