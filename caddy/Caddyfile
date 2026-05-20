@@ -53,10 +53,12 @@
 {$GITEA_DOMAIN} {
     import access-log
     request_body {
-        max_size 512MB
+        max_size 2048MB
     }
+    @not_registry not path /v2/*
     route {
-        import security
+        crowdsec
+        appsec @not_registry
         reverse_proxy http://gitea:3000 {
             header_up Host {http.request.host}
         }
