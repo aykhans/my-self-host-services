@@ -10,7 +10,7 @@ services:
       - "--label-enable"
       - "--cleanup"
       - "--interval"
-      - "600" # 10 minutes
+      - "28800" # 8 hours
     logging:
       driver: "json-file"
       options:
