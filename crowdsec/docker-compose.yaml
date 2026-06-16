@@ -48,6 +48,11 @@ services:
       - /run/log/journal:/run/log/journal:ro
       - /etc/machine-id:/etc/machine-id:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M
     logging:
       driver: "json-file"
       options:
@@ -70,6 +75,11 @@ services:
       - ./data/geoip:/geoip:ro
     depends_on:
       - crowdsec
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
     logging:
       driver: "json-file"
       options:
@@ -89,6 +99,11 @@ services:
       GEOIPUPDATE_FREQUENCY: "24"
     volumes:
       - ./data/geoip:/usr/share/GeoIP
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
     logging:
       driver: "json-file"
       options:
