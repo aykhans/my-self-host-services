@@ -68,7 +68,7 @@ services:
     environment:
       CROWDSEC_LAPI_URL: "http://crowdsec:8080"
       CROWDSEC_API_KEY: "${CROWDSEC_BOUNCER_KEY_EXPORTER}"
-      POLL_INTERVAL_SECS: "30"
+      POLL_INTERVAL_SECS: "120"
       LISTEN_PORT: "9100"
       GEOIP_CITY_DB: "/geoip/GeoLite2-City.mmdb"
     volumes:
