@@ -128,7 +128,7 @@
         max_size 8120MB
     }
     route {
-        import security
+        crowdsec
         reverse_proxy http://sftpgo:8080 {
             header_up Host {http.request.host}
         }
@@ -170,7 +170,7 @@
         max_size 1024MB
     }
     route {
-        import security
+        crowdsec
         reverse_proxy http://immich_server:2283 {
             header_up Host {http.request.host}
         }

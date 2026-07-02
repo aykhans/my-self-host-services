@@ -51,7 +51,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
+          cpus: "0.6"
           memory: 768M
     logging:
       driver: "json-file"
@@ -68,7 +68,7 @@ services:
     environment:
       CROWDSEC_LAPI_URL: "http://crowdsec:8080"
       CROWDSEC_API_KEY: "${CROWDSEC_BOUNCER_KEY_EXPORTER}"
-      POLL_INTERVAL_SECS: "120"
+      POLL_INTERVAL_SECS: "300"
       LISTEN_PORT: "9100"
       GEOIP_CITY_DB: "/geoip/GeoLite2-City.mmdb"
     volumes:
