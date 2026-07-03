@@ -114,6 +114,43 @@ docker exec crowdsec cscli bouncers list      # 'firewall' should appear with a 
 sudo nft list ruleset | grep crowdsec         # kernel-level rules in place
 ```
 
+## Backups (optional, restic)
+
+This is **optional** — use it only if you want off-site, encrypted backups of your service data. Here it is done with [restic](https://github.com/restic/restic) over SFTP (e.g. a Hetzner Storage Box). restic encrypts client-side, deduplicates and compresses, so no separate `tar`/`gzip` is needed. Run as **root**, since Docker-created service data is mostly root-owned.
+
+Replace the placeholders: `USER@HOST:PORT` (SFTP target), `/path/to/restic-repo` (repo path on the server), `YOUR_PASSWORD` (losing it means the backup is unrecoverable), `/path/to/services` (directory to back up). Do not commit real secrets to git.
+
+```sh
+# 1. Install restic and set up passwordless SSH to the target (as root)
+sudo apt install restic
+sudo -i
+ssh-keygen -t ed25519 && ssh-copy-id -p PORT USER@HOST   # no passphrase
+
+# 2. Backup script: /usr/local/bin/restic-backup.sh  (chmod 700)
+#!/bin/bash
+export RESTIC_REPOSITORY="sftp://USER@HOST:PORT//path/to/restic-repo"   # note the double slash before an absolute path
+export RESTIC_PASSWORD="YOUR_PASSWORD"
+restic backup /path/to/services --compression max
+restic forget --keep-last 3 --prune                       # keep only the 3 newest snapshots
+
+# 3. Initialize once, then test
+restic init
+/usr/local/bin/restic-backup.sh && restic snapshots
+
+# 4. Schedule via cron (3x/day at 06:00, 14:00, 22:00)
+sudo crontab -e
+# 0 6,14,22 * * * /usr/local/bin/restic-backup.sh >> /var/log/restic-backup.log 2>&1
+```
+
+Restore (from any machine with restic + repo access + password, as root):
+
+```sh
+restic snapshots
+restic restore latest --target /restore/destination
+```
+
+Other useful commands: `restic check` (verify integrity), `restic unlock` (clear a stale lock), `restic stats`.
+
 ## Stopping Services
 
 To stop all running services, use:
