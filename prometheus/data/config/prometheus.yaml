@@ -26,3 +26,8 @@ scrape_configs:
       scrape_interval: 30s
       static_configs:
           - targets: ["crowdsec_exporter:9100"]
+
+    - job_name: storagebox_exporter
+      scrape_interval: 60s
+      static_configs:
+          - targets: ["storagebox_exporter:9509"]

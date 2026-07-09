@@ -72,5 +72,24 @@ services:
         max-size: "100m"
         max-file: "3"
 
+  storagebox_exporter:
+    image: ghcr.io/crstian19/prometheus-storagebox-exporter:0.5
+    container_name: storagebox_exporter
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - prometheus
+    environment:
+      HETZNER_TOKEN: "${HETZNER_TOKEN}"
+      LISTEN_ADDRESS: ":9509"
+      METRICS_PATH: "/metrics"
+      LOG_LEVEL: "info"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
 volumes:
   prometheus-data:

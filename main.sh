@@ -65,6 +65,7 @@ generate_env_files() {
     cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./stalwart/.env.example ./stalwart/.env
     cp --update=none ./crowdsec/.env.example ./crowdsec/.env
+    cp --update=none ./prometheus/.env.example ./prometheus/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     print_success ".env files generated."
 }

@@ -58,6 +58,7 @@ Edit the generated `.env` files to fill in the required fields:
 - `./stalwart/.env`
 - `./caddy/.env`
 - `./crowdsec/.env`
+- `./prometheus/.env`
 - `./caddy/Caddyfile.private`
 
 ### 4. Bouncer Keys (CrowdSec)
