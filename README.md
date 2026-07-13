@@ -20,6 +20,8 @@
         - 9009-9013/tcp (relay)
     - **SFTPGo**
         - 2022/tcp (SFTP)
+    - **Gitea**
+        - 2222/tcp (SSH)
     - **WireGuard Easy**
         - 51820/udp (WireGuard)
 

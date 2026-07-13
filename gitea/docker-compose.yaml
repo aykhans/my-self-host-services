@@ -15,10 +15,16 @@ services:
     environment:
       - USER_UID=${USER_UID}
       - USER_GID=${USER_GID}
+      - GITEA__server__SSH_DOMAIN=${GITEA_SSH_DOMAIN}
+      - GITEA__server__SSH_PORT=2222
+      - GITEA__server__SSH_LISTEN_PORT=2222
+      - GITEA__server__START_SSH_SERVER=false
     restart: unless-stopped
     networks:
       - gitea
       - caddy
+    ports:
+      - "2222:2222"
     volumes:
       - ./data:/data
       - /etc/timezone:/etc/timezone:ro
