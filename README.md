@@ -91,24 +91,9 @@ Launch all services with the following command:
 
 ### 6. Host Firewall Bouncer (CrowdSec, nftables)
 
-The Caddy bouncer protects HTTP services. Stalwart's mail ports (25/465/587/143/993/110/995/4190) bypass Caddy, so install a firewall bouncer on the host. CrowdSec packages live on PackageCloud, not in the default apt repos, so add the repo first:
+The Caddy bouncer protects HTTP services. Stalwart's mail ports (25/465/587/143/993/110/995/4190) bypass Caddy, so run a CrowdSec **firewall bouncer** on the host itself (nftables backend).
 
-```sh
-curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
-sudo apt install crowdsec-firewall-bouncer-nftables
-```
-
-Do NOT use `install.crowdsec.net` (that installs the engine too, which we already run in Docker).
-
-Patch the default config (the package writes `api_url: http://127.0.0.1:8080/` but our LAPI is on 18080):
-
-```sh
-FW_KEY=$(grep '^CROWDSEC_BOUNCER_KEY_FW=' ./crowdsec/.env | cut -d= -f2)
-sudo sed -i "s|^api_url:.*|api_url: http://127.0.0.1:18080/|" /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
-sudo sed -i "s|^api_key:.*|api_key: $FW_KEY|" /etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml
-sudo systemctl enable --now crowdsec-firewall-bouncer
-sudo systemctl status crowdsec-firewall-bouncer --no-pager
-```
+Configure it to talk to the engine's LAPI on `127.0.0.1:18080` (published by the crowdsec container) and give it an `api_key` equal to `CROWDSEC_BOUNCER_KEY_FW` from step 4. Do NOT install the CrowdSec engine on the host, it already runs in Docker. For installing and configuring the bouncer itself, see the official docs: https://docs.crowdsec.net/u/bouncers/firewall/ (repo: https://github.com/crowdsecurity/cs-firewall-bouncer).
 
 Verify:
 
@@ -119,30 +104,18 @@ sudo nft list ruleset | grep crowdsec         # kernel-level rules in place
 
 ## Backups (optional, restic)
 
-This is **optional** — use it only if you want off-site, encrypted backups of your service data. Here it is done with [restic](https://github.com/restic/restic) over SFTP (e.g. a Hetzner Storage Box). restic encrypts client-side, deduplicates and compresses, so no separate `tar`/`gzip` is needed. Run as **root**, since Docker-created service data is mostly root-owned.
+This is **optional**, use it only if you want off-site, encrypted backups of your service data. Here it is done with [restic](https://github.com/restic/restic) over SFTP (e.g. a Hetzner Storage Box). restic encrypts client-side, deduplicates and compresses, so no separate `tar`/`gzip` is needed. Run as **root**, since Docker-created service data is mostly root-owned.
 
-Replace the placeholders: `USER@HOST:PORT` (SFTP target), `/path/to/restic-repo` (repo path on the server), `YOUR_PASSWORD` (losing it means the backup is unrecoverable), `/path/to/services` (directory to back up). Do not commit real secrets to git.
+Installing restic and scheduling the backup depend on the host and are out of scope here. Replace the placeholders: `USER@HOST:PORT` (SFTP target), `/path/to/restic-repo` (repo path on the server), `YOUR_PASSWORD` (losing it means the backup is unrecoverable), `/path/to/services` (directory to back up). Do not commit real secrets to git.
 
 ```sh
-# 1. Install restic and set up passwordless SSH to the target (as root)
-sudo apt install restic
-sudo -i
-ssh-keygen -t ed25519 && ssh-copy-id -p PORT USER@HOST   # no passphrase
-
-# 2. Backup script: /usr/local/bin/restic-backup.sh  (chmod 700)
-#!/bin/bash
 export RESTIC_REPOSITORY="sftp://USER@HOST:PORT//path/to/restic-repo"   # note the double slash before an absolute path
 export RESTIC_PASSWORD="YOUR_PASSWORD"
+
+restic init                                    # once
 restic backup /path/to/services --compression max
-restic forget --keep-last 3 --prune                       # keep only the 3 newest snapshots
-
-# 3. Initialize once, then test
-restic init
-/usr/local/bin/restic-backup.sh && restic snapshots
-
-# 4. Schedule via cron (3x/day at 06:00, 14:00, 22:00)
-sudo crontab -e
-# 0 6,14,22 * * * /usr/local/bin/restic-backup.sh >> /var/log/restic-backup.log 2>&1
+restic forget --keep-last 3 --prune            # keep only the 3 newest snapshots
+restic snapshots
 ```
 
 Restore (from any machine with restic + repo access + password, as root):
