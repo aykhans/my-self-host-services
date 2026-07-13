@@ -1,5 +1,6 @@
 source: journalctl
 journalctl_filter:
-  - "_SYSTEMD_UNIT=ssh.service"
+  # NixOS names the OpenSSH unit "sshd.service"; Debian/Ubuntu use "ssh.service".
+  - "_SYSTEMD_UNIT=sshd.service"
 labels:
   type: syslog
