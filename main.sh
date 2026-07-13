@@ -88,6 +88,13 @@ fix_permissions() {
 start_services() {
     fix_permissions
 
+    # Ensure ~/.docker/config.json is a FILE before any container mounts it.
+    # watchtower bind-mounts it; if it is missing, the Docker daemon creates it
+    # as a root-owned directory, which then breaks every docker CLI call.
+    mkdir -p ~/.docker
+    [ -d ~/.docker/config.json ] && sudo rmdir ~/.docker/config.json
+    [ -f ~/.docker/config.json ] || echo '{}' > ~/.docker/config.json
+
     docker network create caddy 2>/dev/null
     docker network create grafana 2>/dev/null
     docker network create gitea 2>/dev/null
