@@ -66,6 +66,7 @@ services:
       - -housekeeping_interval=3s
       - -storage_duration=2m
       - -docker_only
+      - -containerd=/var/run/docker/containerd/containerd.sock
     logging:
       driver: "json-file"
       options:
