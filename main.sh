@@ -70,7 +70,24 @@ generate_env_files() {
     print_success ".env files generated."
 }
 
+# Some containers run as a fixed non-root uid and bind-mount their data from
+# this repo. A fresh `git clone` (or a non-root restore) leaves that data owned
+# by the cloning user, so those services can't write to it. Docker does not
+# chown bind mounts, so reset ownership to each container's uid before starting.
+# Add a line here whenever a new service pins a non-root `user:`.
+fix_permissions() {
+    echo "Fixing data ownership for fixed-uid services..."
+    # Only services that run as a fixed non-root uid AND write to a bind-mounted
+    # data dir need this. Root containers write fine; images like mysql/gitea
+    # chown their own data via a root entrypoint; grafana/prometheus here only
+    # read config or use no writable bind mount, so they are intentionally absent.
+    sudo chown -R 1001:1001 ./stalwart/data   # stalwart: compose user "1001:1001"
+    sudo chown -R 1000:1000 ./sftpgo/data     # sftpgo:   image default user 1000
+}
+
 start_services() {
+    fix_permissions
+
     docker network create caddy 2>/dev/null
     docker network create grafana 2>/dev/null
     docker network create gitea 2>/dev/null
