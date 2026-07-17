@@ -2,6 +2,16 @@ services:
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy:15
     container_name: wg-easy
+    # Kernel 6.18+ dropped the legacy iptables modules; the image defaults to
+    # legacy iptables, so wg-quick's NAT rules fail ("can't initialize iptables
+    # table nat"). Point iptables/ip6tables at the nft backend (which works with
+    # the modern kernel) before running the normal entrypoint.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - ln -sf /usr/sbin/iptables-nft /etc/alternatives/iptables && ln -sf /usr/sbin/ip6tables-nft /etc/alternatives/ip6tables && exec docker-entrypoint.sh "$$@"
+      - --
+    command: ["/usr/bin/dumb-init", "node", "server/index.mjs"]
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
