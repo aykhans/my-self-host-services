@@ -6,11 +6,13 @@ networks:
 
 services:
   memos:
-    image: neosmemo/memos:0.29
+    image: neosmemo/memos:0.30
     restart: unless-stopped
     container_name: memos
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      - MEMOS_INSTANCE_URL=${MEMOS_INSTANCE_URL}
     volumes:
       - ./data/app:/var/opt/memos
     networks:
