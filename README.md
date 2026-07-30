@@ -61,6 +61,7 @@ Edit the generated `.env` files to fill in the required fields:
 - `./caddy/.env`
 - `./crowdsec/.env`
 - `./prometheus/.env`
+- `./matrix/.env` (set `POSTGRES_PASSWORD`; must match the DB password in `./matrix/data/synapse/homeserver.yaml`)
 - `./caddy/Caddyfile.private`
 
 ### 4. Bouncer Keys (CrowdSec)

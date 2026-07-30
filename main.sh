@@ -66,6 +66,7 @@ generate_env_files() {
     cp --update=none ./stalwart/.env.example ./stalwart/.env
     cp --update=none ./crowdsec/.env.example ./crowdsec/.env
     cp --update=none ./prometheus/.env.example ./prometheus/.env
+    cp --update=none ./matrix/.env.example ./matrix/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     print_success ".env files generated."
 }
@@ -213,6 +214,15 @@ start_services() {
         print_success "Croc started successfully."
     else
         print_error "failed to start Croc!"
+        exit 1
+    fi
+
+    echo "Starting matrix..."
+    $DOCKER_COMPOSE_COMMAND -f ./matrix/docker-compose.yaml up --pull always -d
+    if [ $? -eq 0 ]; then
+        print_success "Matrix started successfully."
+    else
+        print_error "failed to start Matrix!"
         exit 1
     fi
 
@@ -409,6 +419,15 @@ stop_services() {
         print_success "Crowdsec stopped successfully."
     else
         print_error "failed to stop Crowdsec!"
+        exit 1
+    fi
+
+    echo "Stopping matrix..."
+    $DOCKER_COMPOSE_COMMAND -f ./matrix/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Matrix stopped successfully."
+    else
+        print_error "failed to stop Matrix!"
         exit 1
     fi
 

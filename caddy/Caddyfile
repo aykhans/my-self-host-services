@@ -155,10 +155,23 @@
     request_body {
         max_size 124MB
     }
-    route {
-        import security
-        reverse_proxy http://ghost:2368 {
-            header_up Host {http.request.host}
+    # Matrix federation/client delegation (server_name = apex domain)
+    handle /.well-known/matrix/server {
+        header Content-Type application/json
+        header Access-Control-Allow-Origin *
+        respond `{"m.server":"{$MATRIX_DOMAIN}:443"}`
+    }
+    handle /.well-known/matrix/client {
+        header Content-Type application/json
+        header Access-Control-Allow-Origin *
+        respond `{"m.homeserver":{"base_url":"https://{$MATRIX_DOMAIN}"}}`
+    }
+    handle {
+        route {
+            import security
+            reverse_proxy http://ghost:2368 {
+                header_up Host {http.request.host}
+            }
         }
     }
 }
@@ -249,6 +262,22 @@
                 compression off
             }
         }
+    }
+}
+
+############## matrix (synapse) ##############
+{$MATRIX_DOMAIN} {
+    import access-log
+    request_body {
+        max_size 512MB
+    }
+    route {
+        import security
+        @matrix path /_matrix/* /_synapse/client/*
+        reverse_proxy @matrix http://synapse:8008 {
+            header_up Host {http.request.host}
+        }
+        respond 404
     }
 }
 
