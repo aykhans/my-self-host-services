@@ -27,6 +27,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
     logging:
       driver: "json-file"
       options:
@@ -51,6 +56,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 400M
     logging:
       driver: "json-file"
       options:
