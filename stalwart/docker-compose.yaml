@@ -15,8 +15,10 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
-      - stalwart
-      - caddy
+      stalwart: {}
+      caddy:
+        aliases:
+          - mail.aykhans.me
     environment:
       STALWART_RECOVERY_ADMIN: "${STALWART_RECOVERY_ADMIN}"
       STALWART_HTTPS_PORT: "443"
