@@ -1,8 +1,11 @@
 name: aykhans/whitelist-matrix-client-probes
-description: "Prevent http-probing false positives from Matrix client feature-detection 404s"
+description: "Prevent http-probing / http-crawl false positives from normal Matrix client traffic"
 whitelist:
-  reason: "Matrix client MSC feature-detection and media preview requests return 404 by design (benign)"
+  reason: "Matrix client feature-detection, media loading and room lookups are benign client behavior"
   expression:
+    # Feature-detection endpoints (unstable MSCs) return 404 by design
     - evt.Meta.service == 'http' and evt.Meta.http_status == '404' and evt.Meta.http_path startsWith '/_matrix/client/unstable/org.matrix.msc'
-    - evt.Meta.service == 'http' and evt.Meta.http_status == '404' and evt.Meta.http_path startsWith '/_matrix/client/v1/media/preview_url'
+    # Room event/relations/state lookups that 404 (event not found / federated backfill)
     - evt.Meta.service == 'http' and evt.Meta.http_status == '404' and evt.Meta.http_path startsWith '/_matrix/client/' and evt.Meta.http_path contains '/rooms/'
+    # Media thumbnails/downloads/preview: high-cardinality GET bursts (any status) trip http-crawl
+    - evt.Meta.service == 'http' and evt.Meta.http_path startsWith '/_matrix/client/' and evt.Meta.http_path contains '/media/'

@@ -42,6 +42,7 @@ services:
       - ./parsers/s01-parse/stalwart-logs-extended.yaml:/etc/crowdsec/parsers/s01-parse/stalwart-logs-extended.yaml:ro
       - ./parsers/s02-enrich/whitelist-trusted.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-trusted.yaml:ro
       - ./parsers/s02-enrich/whitelist-matrix-client-probes.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-matrix-client-probes.yaml:ro
+      - ./parsers/s02-enrich/whitelist-dav-auth-challenge.yaml:/etc/crowdsec/parsers/s02-enrich/whitelist-dav-auth-challenge.yaml:ro
       - ./scenarios/stalwart-smtp-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-smtp-bruteforce.yaml:ro
       - ./scenarios/stalwart-auth-bruteforce.yaml:/etc/crowdsec/scenarios/stalwart-auth-bruteforce.yaml:ro
       - ./scenarios/http-admin-interface-probing.yaml:/etc/crowdsec/scenarios/http-admin-interface-probing.yaml:ro

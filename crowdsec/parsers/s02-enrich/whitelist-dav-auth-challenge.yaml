@@ -1,0 +1,6 @@
+name: aykhans/whitelist-dav-auth-challenge
+description: "Prevent http-generic-bf false positives from DAV clients' auth-challenge 401s"
+whitelist:
+  reason: "CalDAV/CardDAV/WebDAV clients (Thunderbird etc.) send an unauthenticated PROPFIND and get 401 by design; real DAV auth brute-force is still covered by the Stalwart auth-bruteforce scenario reading Stalwart's own logs"
+  expression:
+    - evt.Meta.service == 'http' and evt.Meta.http_status == '401' and evt.Meta.http_path startsWith '/dav/'
