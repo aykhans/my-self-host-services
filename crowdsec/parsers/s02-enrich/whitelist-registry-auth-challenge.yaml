@@ -1,0 +1,6 @@
+name: aykhans/whitelist-registry
+description: "Prevent http-probing / http-generic-401-bf false positives from Docker/OCI registry traffic"
+whitelist:
+  reason: "Docker/OCI registry v2 protocol is probe-like by design: unauthenticated /v2/ requests get 401 auth challenges and blob-existence checks get 404 before upload; real registry abuse is handled by Gitea's own auth"
+  expression:
+    - evt.Meta.service == 'http' and evt.Meta.target_fqdn == 'git.aykhans.me' and evt.Meta.http_path startsWith '/v2/'
