@@ -1,6 +1,6 @@
 services:
   croc:
-    image: schollz/croc:10
+    image: schollz/croc:11
     container_name: croc
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
