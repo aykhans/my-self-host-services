@@ -90,7 +90,7 @@ services:
         max-file: "3"
 
   geoipupdate:
-    image: ghcr.io/maxmind/geoipupdate:v7
+    image: ghcr.io/maxmind/geoipupdate:v8
     container_name: crowdsec_geoipupdate
     restart: unless-stopped
     labels:
