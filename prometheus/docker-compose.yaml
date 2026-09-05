@@ -74,7 +74,7 @@ services:
         max-file: "3"
 
   storagebox_exporter:
-    image: ghcr.io/crstian19/prometheus-storagebox-exporter:0.5
+    image: ghcr.io/crstian19/prometheus-storagebox-exporter:0.7.0
     container_name: storagebox_exporter
     restart: unless-stopped
     labels:
