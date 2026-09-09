@@ -59,6 +59,7 @@ generate_env_files() {
     cp --update=none ./vaultwarden/.env.example ./vaultwarden/.env
     cp --update=none ./caddy/.env.example ./caddy/.env
     cp --update=none ./glance/.env.example ./glance/.env
+    cp --update=none ./memos/.env.example ./memos/.env
     cp --update=none ./ghost/.env.example ./ghost/.env
     cp --update=none ./immich/.env.example ./immich/.env
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env

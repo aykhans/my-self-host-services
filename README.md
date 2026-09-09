@@ -53,6 +53,7 @@ Edit the generated `.env` files to fill in the required fields:
 - `./sftpgo/.env`
 - `./vaultwarden/.env`
 - `./glance/.env`
+- `./memos/.env`
 - `./ghost/.env`
 - `./immich/.env`
 - `./uptime_kuma/.env`
