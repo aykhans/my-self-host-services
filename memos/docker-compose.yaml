@@ -6,7 +6,7 @@ networks:
 
 services:
   memos:
-    image: neosmemo/memos:0.30
+    image: neosmemo/memos:0.31
     restart: unless-stopped
     container_name: memos
     labels:
