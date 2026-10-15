@@ -23,6 +23,11 @@ services:
         interface_name: wgeth0
     environment:
       WG_DEVICE: wgeth0
+      EXPERIMENTAL_AWG: "true"
+      # NixOS has no /lib/modules, so the modinfo-based auto-detect fails; the
+      # amneziawg module is loaded on the host (nix-config boot.kernelModules).
+      OVERRIDE_AUTO_AWG: awg
+      DISABLE_IPV6: "true"
     volumes:
       - ./data:/etc/wireguard
       - /lib/modules:/lib/modules:ro
@@ -30,6 +35,11 @@ services:
       - "51820:51820/udp"
       # - "51821:51821/tcp"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 5s sh -c \"awg show | grep -q interface\""]
+      interval: 60s
+      timeout: 5s
+      retries: 3
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
