@@ -66,7 +66,6 @@ generate_env_files() {
     cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./stalwart/.env.example ./stalwart/.env
     cp --update=none ./crowdsec/.env.example ./crowdsec/.env
-    cp --update=none ./prometheus/.env.example ./prometheus/.env
     cp --update=none ./matrix/.env.example ./matrix/.env
     cp --update=none ./caddy/Caddyfile.private.example ./caddy/Caddyfile.private
     print_success ".env files generated."
@@ -81,7 +80,7 @@ fix_permissions() {
     echo "Fixing data ownership for fixed-uid services..."
     # Only services that run as a fixed non-root uid AND write to a bind-mounted
     # data dir need this. Root containers write fine; images like mysql/gitea
-    # chown their own data via a root entrypoint; grafana/prometheus here only
+    # chown their own data via a root entrypoint; grafana/victoriametrics here only
     # read config or use no writable bind mount, so they are intentionally absent.
     sudo chown -R 1001:1001 ./stalwart/data   # stalwart: compose user "1001:1001"
     sudo chown -R 1000:1000 ./sftpgo/data     # sftpgo:   image default user 1000
@@ -101,12 +100,12 @@ start_services() {
     docker network create grafana 2>/dev/null
     docker network create gitea 2>/dev/null
 
-    echo "Starting prometheus..."
-    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yaml up --pull always -d
+    echo "Starting victoriametrics..."
+    $DOCKER_COMPOSE_COMMAND -f ./victoriametrics/docker-compose.yaml up --pull always -d
     if [ $? -eq 0 ]; then
-        print_success "Prometheus started successfully."
+        print_success "VictoriaMetrics started successfully."
     else
-        print_error "failed to start Prometheus!"
+        print_error "failed to start VictoriaMetrics!"
         exit 1
     fi
 
@@ -297,12 +296,12 @@ stop_services() {
         exit 1
     fi
 
-    echo "Stopping prometheus..."
-    $DOCKER_COMPOSE_COMMAND -f ./prometheus/docker-compose.yaml down
+    echo "Stopping victoriametrics..."
+    $DOCKER_COMPOSE_COMMAND -f ./victoriametrics/docker-compose.yaml down
     if [ $? -eq 0 ]; then
-        print_success "Prometheus stopped successfully."
+        print_success "VictoriaMetrics stopped successfully."
     else
-        print_error "failed to stop Prometheus!"
+        print_error "failed to stop VictoriaMetrics!"
         exit 1
     fi
 

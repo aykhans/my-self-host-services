@@ -1,5 +1,5 @@
 networks:
-  prometheus:
+  metrics:
     external: false
   grafana:
     name: grafana
@@ -11,18 +11,24 @@ networks:
     external: true
 
 services:
-  prometheus:
-    image: prom/prometheus:v3
-    container_name: prometheus
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.154.0
+    container_name: victoriametrics
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
-      - prometheus
+      - metrics
       - grafana
       - caddy
-    command: "--config.file=/etc/prometheus/prometheus.yaml --storage.tsdb.retention.time=10d --storage.tsdb.retention.size=15GB"
+    command:
+      - "--promscrape.config=/etc/victoriametrics/scrape.yaml"
+      - "--retentionPeriod=90d"
+      - "--storageDataPath=/victoria-metrics-data"
+      - "--httpListenAddr=:8428"
     volumes:
-      - ./data/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
-      - prometheus-data:/prometheus
+      - ./data/config/scrape.yaml:/etc/victoriametrics/scrape.yaml:ro
+      - victoriametrics-data:/victoria-metrics-data
     logging:
       driver: "json-file"
       options:
@@ -34,7 +40,7 @@ services:
     container_name: node_exporter
     restart: unless-stopped
     networks:
-      - prometheus
+      - metrics
     command:
       - "--path.rootfs=/host"
     pid: host
@@ -51,7 +57,7 @@ services:
     container_name: cadvisor
     restart: unless-stopped
     networks:
-      - prometheus
+      - metrics
     volumes:
       - "/:/rootfs:ro"
       - "/var/run:/var/run:ro"
@@ -74,4 +80,4 @@ services:
         max-file: "3"
 
 volumes:
-  prometheus-data:
+  victoriametrics-data:
