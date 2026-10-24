@@ -1,0 +1,50 @@
+networks:
+  caddy:
+    name: caddy
+    driver: bridge
+    external: true
+
+volumes:
+  socket:
+    name: beszel_socket
+
+services:
+  beszel:
+    image: henrygd/beszel:0.21
+    container_name: beszel
+    restart: unless-stopped
+    volumes:
+      - ./data/hub:/beszel_data
+      - socket:/beszel_socket
+    networks:
+      - caddy
+    env_file:
+      - ./.env
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+  beszel-agent:
+    image: henrygd/beszel-agent:0.21
+    container_name: beszel_agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./data/agent:/var/lib/beszel-agent
+      - socket:/beszel_socket
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ./.env
+    environment:
+      LISTEN: /beszel_socket/beszel.sock
+    labels:
+      com.centurylinklabs.watchtower.enable: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"

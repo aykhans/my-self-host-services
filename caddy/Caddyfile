@@ -282,3 +282,17 @@
 }
 
 import Caddyfile.private
+
+############## beszel ##############
+{$BESZEL_DOMAIN} {
+    import access-log
+    request_body {
+        max_size 64MB
+    }
+    route {
+        import security
+        reverse_proxy http://beszel:8090 {
+            header_up Host {http.request.host}
+        }
+    }
+}

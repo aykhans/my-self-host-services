@@ -63,6 +63,7 @@ generate_env_files() {
     cp --update=none ./ghost/.env.example ./ghost/.env
     cp --update=none ./immich/.env.example ./immich/.env
     cp --update=none ./uptime_kuma/.env.example ./uptime_kuma/.env
+    cp --update=none ./beszel/.env.example ./beszel/.env
     cp --update=none ./croc/.env.example ./croc/.env
     cp --update=none ./stalwart/.env.example ./stalwart/.env
     cp --update=none ./crowdsec/.env.example ./crowdsec/.env
@@ -205,6 +206,15 @@ start_services() {
         print_success "Uptime kuma started successfully."
     else
         print_error "failed to start Uptime kuma!"
+        exit 1
+    fi
+
+    echo "Starting beszel..."
+    $DOCKER_COMPOSE_COMMAND -f ./beszel/docker-compose.yaml up --pull always -d
+    if [ $? -eq 0 ]; then
+        print_success "Beszel started successfully."
+    else
+        print_error "failed to start Beszel!"
         exit 1
     fi
 
@@ -392,6 +402,15 @@ stop_services() {
         print_success "Uptime kuma stopped successfully."
     else
         print_error "failed to stop Uptime kuma!"
+        exit 1
+    fi
+
+    echo "Stopping beszel..."
+    $DOCKER_COMPOSE_COMMAND -f ./beszel/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Beszel stopped successfully."
+    else
+        print_error "failed to stop Beszel!"
         exit 1
     fi
 
