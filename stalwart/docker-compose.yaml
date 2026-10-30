@@ -8,7 +8,7 @@ networks:
 
 services:
   stalwart:
-    image: stalwartlabs/stalwart:v0.16
+    image: stalwartlabs/stalwart:v1.0.1
     container_name: stalwart
     restart: unless-stopped
     user: "1001:1001"
@@ -33,62 +33,10 @@ services:
       - "110:110"
       - "995:995"
     volumes:
-      - ./data/etc:/etc/stalwart
-      - ./data/var:/var/lib/stalwart
+      - ./data-v1/etc:/etc/stalwart
+      - ./data-v1/var:/var/lib/stalwart-v1
     logging:
       driver: "json-file"
       options:
         max-size: "100m"
         max-file: "3"
-
-  stalwart-bootstrap:
-    profiles: [bootstrap]
-    build:
-      context: .
-      dockerfile: Dockerfile.bootstrap
-    container_name: stalwart-bootstrap
-    networks:
-      - stalwart
-    environment:
-      STALWART_URL: "http://stalwart:8080"
-      STALWART_USER: "${STALWART_BOOTSTRAP_USER}"
-      STALWART_PASSWORD: "${STALWART_BOOTSTRAP_PASSWORD}"
-      STALWART_DEFAULT_HOSTNAME: "mail.aykhans.me"
-      STALWART_DEFAULT_DOMAIN: "aykhans.me"
-      STALWART_PROXY_NETWORK: "172.18.0.0/16"
-    volumes:
-      - ./plan.json:/plan.json:ro
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        set -e
-        # 1) Apply plan.json (Domain, etc.); tolerate primaryKeyViolation as expected.
-        out=$$(stalwart-cli apply --file /plan.json --continue-on-error 2>&1) || true
-        echo "$$out"
-        real=$$(echo "$$out" | grep -E "^✗" | grep -v "primaryKeyViolation" || true)
-        [ -z "$$real" ] || { echo "Unexpected apply errors"; exit 1; }
-
-        # 2) Resolve Domain id by name
-        DOMAIN_ID=$$(stalwart-cli query Domain 2>/dev/null | awk -v n="$$STALWART_DEFAULT_DOMAIN" 'NR>1 && $$2==n {print $$1; exit}')
-        [ -n "$$DOMAIN_ID" ] || { echo "Domain $$STALWART_DEFAULT_DOMAIN not found"; exit 1; }
-
-        # 3) Idempotent SystemSettings update (singleton)
-        stalwart-cli update SystemSettings --field "defaultHostname=$$STALWART_DEFAULT_HOSTNAME" --field "defaultDomainId=$$DOMAIN_ID"
-
-        # 4) Trust X-Forwarded-* headers from Caddy (real client IP for HTTP-level checks)
-        stalwart-cli update Http --field useXForwarded=true
-
-        # 5) Whitelist the reverse-proxy network from auto-ban (port-scan/loitering counters
-        #    operate at TCP-source-IP level and would otherwise ban Caddy itself).
-        if ! stalwart-cli query AllowedIp 2>/dev/null | grep -q "$$STALWART_PROXY_NETWORK"; then
-          stalwart-cli create AllowedIp --field "address=$$STALWART_PROXY_NETWORK" --field "reason=Reverse proxy network"
-        fi
-
-        # 6) Trigger settings reload so url_https recomputes (no restart needed)
-        stalwart-cli create Action/ReloadSettings --json "{}"
-
-        echo "Bootstrap complete"
-    depends_on:
-      stalwart:
-        condition: service_healthy
-    restart: "no"
