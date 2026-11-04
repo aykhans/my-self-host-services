@@ -281,6 +281,22 @@
     }
 }
 
+############## unbound ##############
+{$UNBOUND_DOMAIN} {
+    request_body {
+        max_size 64KB
+    }
+    @doh path /{$UNBOUND_DOH_PATH}
+    route {
+        crowdsec
+        handle @doh {
+            rewrite * /dns-query
+            reverse_proxy h2c://unbound:8053
+        }
+        respond 404
+    }
+}
+
 import Caddyfile.private
 
 ############## beszel ##############
