@@ -277,6 +277,15 @@ start_services() {
         exit 1
     fi
 
+    echo "Starting unbound..."
+    $DOCKER_COMPOSE_COMMAND -f ./unbound/docker-compose.yaml up --pull always --build -d
+    if [ $? -eq 0 ]; then
+        print_success "Unbound started successfully."
+    else
+        print_error "failed to start Unbound!"
+        exit 1
+    fi
+
     echo "Starting gopkg proxy..."
     $DOCKER_COMPOSE_COMMAND -f ./gopkg_proxy/docker-compose.yaml up --pull always -d
     if [ $? -eq 0 ]; then
@@ -465,6 +474,15 @@ stop_services() {
         print_success "Stalwart stopped successfully."
     else
         print_error "failed to stop Stalwart!"
+        exit 1
+    fi
+
+    echo "Stopping unbound..."
+    $DOCKER_COMPOSE_COMMAND -f ./unbound/docker-compose.yaml down
+    if [ $? -eq 0 ]; then
+        print_success "Unbound stopped successfully."
+    else
+        print_error "failed to stop Unbound!"
         exit 1
     fi
 
