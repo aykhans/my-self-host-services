@@ -15,21 +15,23 @@
               token: ${GITHUB_TOKEN}
               repositories:
                   - caddyserver/caddy
-                  - louislam/uptime-kuma
-                  - immich-app/immich
+                  - crowdsecurity/crowdsec
+                  - dani-garcia/vaultwarden
+                  - drakkan/sftpgo
+                  - element-hq/synapse
                   - glanceapp/glance
                   - go-gitea/gitea
-                  - drakkan/sftpgo
-                  - usememos/memos
-                  - yourselfhosted/slash
-                  - dani-garcia/vaultwarden
-                  - wg-easy/wg-easy
-                  - pocketbase/pocketbase
-                  - prometheus/prometheus
                   - grafana/grafana
-                  - TryGhost/Ghost
+                  - henrygd/beszel
+                  - immich-app/immich
+                  - louislam/uptime-kuma
+                  - NLnetLabs/unbound
                   - schollz/croc
                   - stalwartlabs/stalwart
+                  - TryGhost/Ghost
+                  - usememos/memos
+                  - VictoriaMetrics/VictoriaMetrics
+                  - wg-easy/wg-easy
 
             - type: docker-containers
               cache: 0s
@@ -54,6 +56,8 @@
                     title: tangled.org
                   - url: https://antonz.org/index.xml
                     title: antonz.org
+                  - url: https://ganigeorgiev.com/meta/pocketbase/pocketbase/releases.atom
+                    title: PocketBase releases
 
       - size: small
         widgets:
