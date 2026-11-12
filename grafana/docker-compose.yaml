@@ -10,7 +10,7 @@ networks:
 
 services:
   grafana:
-    image: grafana/grafana-enterprise:13.2
+    image: grafana/grafana-enterprise:13.3
     container_name: grafana
     restart: unless-stopped
     labels:
